@@ -1,0 +1,21 @@
+
+.body-margin {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.hero-text, .cta-buttons {
+    margin: 1em;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1em;
+}

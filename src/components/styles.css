@@ -1,24 +1,91 @@
-nav a {
+nav a, footer a {
     text-decoration: none;
 }
 
-nav ul {
+nav ul, footer ul {
     list-style: none;
 }
 
-nav li{
+nav li {
     display: inline-block;
     margin-right: 20px;
 }
 
-header {
+.nav-button {
+    background: black;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+nav a:hover {
+    color: #007BFF;
+}
+
+nav a {
+    color: black;
+    font-weight: bolder;
+}
+
+.header-margin {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
     background-color: #f8f8f8;
+    padding: 20px;
+}
+
+.top-content, .bot-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+}
+
+.socials {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+}
+
+.socials li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+footer a {
+    color: black;
+}
+
+.quick-link {
+    text-align: center;
+    padding: 0;
+}
+
+.contacts {
+    padding: 0;
+}
+
+.contacts li {
+    display: flex;
+    gap: 10px;
+}
+
+.footer-margin {
+    max-width: 1280px;
+    margin: 0 auto;
     padding: 20px;
 }
 
 footer {
     background-color: #f8f8f8;
     padding: 20px;
-    text-align: center;
 }
+
