@@ -1,0 +1,24 @@
+nav a {
+    text-decoration: none;
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav li{
+    display: inline-block;
+    margin-right: 20px;
+}
+
+header {
+    display: flex;
+    background-color: #f8f8f8;
+    padding: 20px;
+}
+
+footer {
+    background-color: #f8f8f8;
+    padding: 20px;
+    text-align: center;
+}
