@@ -1,20 +1,20 @@
 import './styles.css'
+import { Link } from "react-router-dom";
 
 function Header() {
     return (
         <>
         <header>
             <div className="header-margin">
-                <img src="/logo.png" alt="Logo" className="logo" />
+                <img src="/src/assets/logo.jpg" alt="Logo" className="logo" />
                 <nav>
                     <ul>
-                        <li><a href="/src/">Home</a></li>
-                        <li><a href="/src/about">About</a></li>
-                        <li><a href="/src/services">Services</a></li>
-                        <li><a href="/src/portfolio">Portfolio</a></li>
-                        <li><a href="/src/faq">FAQs</a></li>
-                        <li><a href="/src/contact">Contact</a></li>
-                        <li><a href="/src/book" className="nav-button">Book Now!</a></li>
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/about">About</Link></li>
+                        <li><Link to="/services">Services</Link></li>
+                        <li><Link to="/portfolio">Portfolio</Link></li>
+                        <li><Link to="/contacts">Contact</Link></li>
+                        <li><Link to="/booking" className="nav-button">Book Now!</Link></li>
                     </ul>
                 </nav>
             </div>

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './styles.css'
 
 function Footer() {
@@ -6,23 +7,22 @@ function Footer() {
             <footer>
                 <div className="footer-margin">
                     <div className="top-content">
-                        <img src="/logo.png" alt="Logo" className="logo" />
+                        <h1 className="company-name">BIG SPACE STUDIO.</h1>
                         <ul className="socials">
                             <li><a href="#"><img src="/src/assets/facebook.png" alt="Social" className="social" /></a></li>
                             <li><a href="#"><img src="/src/assets/tiktok.png" alt="Social" className="social" /></a></li>
                             <li><a href="#"><img src="/src/assets/instagram.png" alt="Social" className="social" /></a></li>
-                            <li><a href="/src/pages/book" className="nav-button">Book Now!</a></li>
+                            <li><Link to="/booking" className="nav-button">Book Now!</Link></li>
                         </ul>
                     </div>
                     <hr></hr>
                     <div className="bot-content">
                         <ul className="quick-link">
-                            <li><a href="/src/pages/home">Home</a></li>
-                            <li><a href="/src/pages/about">About</a></li>
-                            <li><a href="/src/pages/services">Services</a></li>
-                            <li><a href="/src/pages/portfolio">Portfolio</a></li>
-                            <li><a href="/src/pages/faq">FAQs</a></li>
-                            <li><a href="/src/pages/contact">Contact</a></li>
+                            <li><Link to="/">Home</Link></li>
+                            <li><Link to="/about">About</Link></li>
+                            <li><Link to="/services">Services</Link></li>
+                            <li><Link to="/portfolio">Portfolio</Link></li>
+                            <li><Link to="/contacts">Contact</Link></li>
                         </ul>
                         <ul className="quick-link">
                             <li><a href="#">Privacy Policy</a></li>

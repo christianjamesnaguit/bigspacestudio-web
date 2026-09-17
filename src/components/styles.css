@@ -38,7 +38,6 @@ nav a {
 }
 
 header {
-    background-color: #f8f8f8;
     padding: 20px;
 }
 
@@ -85,7 +84,17 @@ footer a {
 }
 
 footer {
-    background-color: #f8f8f8;
     padding: 20px;
 }
 
+.logo {
+    width: 100px;
+    height: auto;
+}
+
+.company-name {
+    font-size: 85px;
+    font-weight: 900;
+    letter-spacing: -10px;
+    margin: 0;
+}

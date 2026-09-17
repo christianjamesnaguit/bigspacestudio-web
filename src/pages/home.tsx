@@ -1,6 +1,7 @@
-import './home.css'
-import Header from './components/header.tsx'
-import Footer from './components/footer.tsx'
+import './styles/home.css'
+import Header from '../components/header.tsx'
+import Footer from '../components/footer.tsx'
+import { Link } from 'react-router-dom'
 
 function Home() {
     return (
@@ -14,12 +15,12 @@ function Home() {
                             <p>This is the home page of our application.</p>
                         </div>
                         <div className="cta-buttons">
-                            <a href="/book" className="nav-button">Book Now!</a>
-                            <a href="/portfolio" className="nav-button">View Our Work</a>
+                            <Link to="/booking" className="nav-button">Book Now!</Link>
+                            <Link to="/portfolio"  className="nav-button">View Our Work</Link>
                         </div>
                     </div>
                     <div>
-                        <img src="/hero-image.png" alt="Hero" />
+                        <img src="/src/assets/hero-image.jpg" alt="Hero" className="hero-image" />
                     </div>
                 </div>
             </div>
