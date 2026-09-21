@@ -28,8 +28,7 @@ function Footer() {
                             <li><a href="#">Privacy Policy</a></li>
                             <li><a href="#">Terms of Service</a></li>
                             <li><a href="#">Booking Policy</a></li>
-                            <li><a href="#">Cancellation Policy</a></li>
-                            <li><a href="#">Rescheduling Policy</a></li>
+                            <li><a href="#">Schedule Policy</a></li>
                         </ul>
                         <p className="address">2nd Floor, Franches Building, <br></br>Santo Rosario St, San Jose, <br></br>Angeles, Pampanga</p>
                         <ul className="contacts">

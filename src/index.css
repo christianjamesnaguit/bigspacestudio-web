@@ -5,3 +5,9 @@
 body {
     margin: 0 0;
 }
+
+.body-margin {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}

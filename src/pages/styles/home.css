@@ -1,14 +1,17 @@
-
-.body-margin {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+p {
+    text-align: justify;
 }
 
+
+/* hero */
 .hero-section {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.hero-right {
+    max-width: 50%;
 }
 
 .hero-text, .cta-buttons {
@@ -24,4 +27,63 @@
     max-width: 100%;
     height: 500px;
     border-radius: 10px;
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: 900;
+    margin-bottom: 0.5em;
+}
+
+/* why */
+
+.why-section {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.why-header {
+    text-align: center 
+}
+
+.why-content {
+    max-width: 250px;
+}
+
+h2 {
+    font-size: 1.5em;
+    font-weight: 900;
+    margin-bottom: 0.5em;
+}
+
+/* about */
+.about-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.about-header {
+    font-size: 5em;
+}
+
+.about-left {
+    max-width: 50%;
+    padding: 1em;
+    margin: 1em;
+}
+
+.about-right {
+    max-width: 50%;
+    padding: 1em;
+    margin: 1em;
+}
+
+.about-image {
+    max-width: 100%;
+    height: 500px;
+    border-radius: 5px;
 }
