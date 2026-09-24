@@ -10,8 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "composer": "^4.1.0",
+    "laravel": "^0.0.1",
+    "php": "^2.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-router-dev": "^1.0.0",
     "react-router-dom": "^7.18.4"
   },
   "devDependencies": {

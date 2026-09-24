@@ -1,0 +1,33 @@
+.feature-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.feature-whole {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid-item {
+  width: 400px;
+  height: 392px;
+  margin: 0.5em;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.whole-item {
+  width: 700px;
+  height: 800px;
+  margin: 0.5em;
+  object-fit: cover;
+  border-radius: 5px;
+}

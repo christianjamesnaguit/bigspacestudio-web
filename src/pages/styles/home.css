@@ -1,89 +1,176 @@
 p {
-    text-align: justify;
+  text-align: justify;
 }
 
+.main-section {
+  height: auto;
+}
 
 /* hero */
 .hero-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .hero-right {
-    max-width: 50%;
+  max-width: 50%;
 }
 
-.hero-text, .cta-buttons {
-    margin: 1em;
+.hero-text,
+.cta-buttons {
+  margin: 1em;
 }
 
 .cta-buttons {
-    display: flex;
-    gap: 1em;
+  display: flex;
+  gap: 1em;
 }
 
 .hero-image {
-    max-width: 100%;
-    height: 500px;
-    border-radius: 10px;
+  max-width: 100%;
+  height: 500px;
+  border-radius: 10px;
 }
 
 h1 {
-    font-size: 3em;
-    font-weight: 900;
-    margin-bottom: 0.5em;
+  font-size: 3em;
+  font-weight: 900;
+  margin-bottom: 0.5em;
 }
 
 /* why */
 
+.sub-section {
+  margin-block: 10em;
+}
+
 .why-section {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: space-between;
-    margin-top: 50px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+  margin-top: 50px;
 }
 
 .why-header {
-    text-align: center 
+  text-align: center;
 }
 
 .why-content {
-    max-width: 250px;
+  max-width: 250px;
 }
 
 h2 {
-    font-size: 1.5em;
-    font-weight: 900;
-    margin-bottom: 0.5em;
+  font-size: 1.5em;
+  font-weight: 900;
+  margin-bottom: 0.5em;
 }
 
 /* about */
 .about-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 .about-header {
-    font-size: 5em;
+  font-size: 5em;
+  margin-top: 0.2em;
 }
 
 .about-left {
-    max-width: 50%;
-    padding: 1em;
-    margin: 1em;
+  max-width: 50%;
+  padding: 1em;
+  margin: 1em;
 }
 
 .about-right {
-    max-width: 50%;
-    padding: 1em;
-    margin: 1em;
+  max-width: 50%;
+  padding: 1em;
+  margin: 1em;
 }
 
 .about-image {
-    max-width: 100%;
-    height: 500px;
-    border-radius: 5px;
+  max-width: 100%;
+  height: 500px;
+  border-radius: 5px;
+}
+
+/* milestone */
+.milestone-section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.milestone-header {
+  font-size: 5em;
+  margin-top: 0.2em;
+  text-align: right;
+}
+
+.milestone-right p {
+  font-size: 2.5em;
+  text-align: right;
+}
+
+.milestone-left {
+  max-width: 50%;
+  padding: 1em;
+  margin: 1em;
+}
+
+.milestone-right {
+  max-width: 50%;
+  padding: 1em;
+  margin: 1em;
+}
+
+/* faq */
+.faq-section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: left;
+}
+
+.faq-header {
+  font-size: 4em;
+  margin-top: 0;
+}
+
+.faq-left {
+  max-width: 50%;
+  padding: 1em;
+  margin: 1em;
+}
+
+.faq-right {
+  max-width: 50%;
+  padding: 1em;
+  margin: 1em;
+}
+
+details {
+  margin-bottom: 1.5em;
+}
+
+details p {
+  font-size: 1em;
+}
+
+summary {
+  font-size: 1.5em;
+  font-weight: 900;
+  margin-bottom: 0.5em;
+  user-select: none;
+}
+
+summary:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.faq-answers {
+  max-width: 600px;
 }
