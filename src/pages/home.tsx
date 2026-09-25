@@ -1,6 +1,7 @@
 import Header from "../components/header.tsx";
 import Footer from "../components/footer.tsx";
 import Carousel from "../components/carousel.tsx";
+import Showcase from "../components/showcase.tsx";
 import { Link } from "react-router-dom";
 import "./styles/home.css";
 
@@ -15,7 +16,7 @@ function Home() {
               <h1>
                 The Perfect Space for <br></br>Life's Biggest Moments.
               </h1>
-              <p>This is the home page of our application.</p>
+              <p>Professional studio photography designed around you.</p>
             </div>
             <div className="cta-buttons">
               <Link to="/booking" className="nav-button">
@@ -32,6 +33,7 @@ function Home() {
         </div>
       </section>
       <section className="body-margin sub-section">
+        <Showcase />
         <h1 className="why-header">WHY CHOOSE BIG SPACE STUDIO?</h1>
         <div className="why-section">
           <div className="why-content">
@@ -123,53 +125,6 @@ function Home() {
             <p>1k+ satisfied clients</p>
             <hr></hr>
             <p>10k+ photoshoots</p>
-          </div>
-        </div>
-      </section>
-      <section className="body-margin">
-        <div className="faq-section">
-          <div className="faq-left">
-            <h1 className="faq-header">FREQUENTLY ASKED QUESTIONS</h1>
-          </div>
-          <div className="faq-right">
-            <details>
-              <summary>What is your pricing?</summary>
-              <div className="faq-answers">
-                <p>
-                  Our pricing varies depending on the type of session and the
-                  length of time. Please contact us for a quote.
-                </p>
-              </div>
-            </details>
-            <details>
-              <summary>What is your return policy?</summary>
-              <div className="faq-answers">
-                <p>
-                  Our return policy is as follows: If you are not satisfied with
-                  your purchase, you can return it within 30 days for a full
-                  refund.
-                </p>
-              </div>
-            </details>
-            <details>
-              <summary>How long does it take to receive my order?</summary>
-              <div className="faq-answers">
-                <p>
-                  Our orders are typically processed within 1-2 business days.
-                  Shipping times may vary depending on your location and the
-                  shipping method chosen.
-                </p>
-              </div>
-            </details>
-            <details>
-              <summary>What is your shipping policy?</summary>
-              <div className="faq-answers">
-                <p>
-                  Our shipping policy is as follows: We ship worldwide and the
-                  shipping cost will be calculated at checkout.
-                </p>
-              </div>
-            </details>
           </div>
         </div>
       </section>

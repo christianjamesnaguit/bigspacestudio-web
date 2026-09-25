@@ -55,6 +55,8 @@ header {
 
 .socials {
   display: flex;
+  justify-content: center;
+  align-items: center;
   list-style: none;
   gap: 10px;
 }
@@ -233,5 +235,67 @@ footer {
 
   to {
     transform: translateX(0);
+  }
+}
+
+/* showcase */
+
+.showcase {
+  position: relative;
+  width: 100%;
+  margin-top: 50px;
+  overflow: hidden;
+}
+
+.showcase::before,
+.showcase::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.showcase::before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    #f8f7f2 0%,
+    rgba(248, 247, 242, 0) 100%
+  );
+}
+
+.showcase::after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    #f8f7f2 0%,
+    rgba(248, 247, 242, 0) 100%
+  );
+}
+
+.showcase-track {
+  display: flex;
+  width: max-content;
+  animation: showcase-scroll 20s linear infinite;
+}
+
+.showcase-image {
+  width: 500px;
+  height: 600px;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin-right: 20px;
+}
+
+@keyframes showcase-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
   }
 }

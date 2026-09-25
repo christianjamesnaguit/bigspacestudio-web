@@ -31,21 +31,81 @@ function Contacts() {
               <img src="/src/assets/icons/building.svg" alt="Building" />
               <h3>Business Location</h3>
             </div>
-            <p>123 Main Street, City, State, ZIP</p>
+            <p>2nd Floor, Franches Building, <br></br>Santo Rosario St, San Jose,{" "}
+              <br></br>Angeles, Pampanga</p>
             <hr></hr>
             <div className="headers">
               <img src="/src/assets/icons/hourglass.svg" alt="Clock" />
               <h3>Business Hours</h3>
             </div>
-            <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
+            <p>Monday - Friday <br />9:00 AM - 5:00 PM</p>
           </div>
-          <div className="chatbot">
-            <p>chatbot work in progress</p>
+          <div className="maps">
+            <p>google maps work in progress</p>
           </div>
         </div>
       </section>
       <section className="body-margin">
-        <div className="contact-form"></div>
+        <div className="flex-container">
+          <div className="contact-info">
+            <div className="main-header">
+              <img src="/src/assets/icons/clipboard.svg" alt="Clipboard" />
+              <h2>Social Media</h2>
+            </div>
+            <hr />
+            <div className="headers">
+              <img src="/src/assets/icons/email.svg" alt="Email" />
+              <h3>Facebook</h3>
+            </div>
+            <p>www.facebook.com/bigspacestudio</p>
+            <hr></hr>
+            <div className="headers">
+              <img src="/src/assets/icons/phone.svg" alt="Phone" />
+              <h3>Messenger</h3>
+            </div>
+            <p>Big Space Studio</p>
+            <hr></hr>
+            <div className="headers">
+              <img src="/src/assets/icons/building.svg" alt="Building" />
+              <h3>Instagram</h3>
+            </div>
+            <p>www.instagram.com/bigspacestudio</p>
+            <hr></hr>
+            <div className="headers">
+              <img src="/src/assets/icons/hourglass.svg" alt="Clock" />
+              <h3>Tiktok</h3>
+            </div>
+            <p>www.tiktok.com/@bigspacestudio</p>
+          </div>  
+          <div className="contact-form">
+            <h2>Send us a message</h2>
+            <form>
+              <div className="form-row">
+                <label htmlFor="name">Name</label>
+                <input id="name" name="name" type="text" autoComplete="name" required />
+              </div>
+              <div className="form-row">
+                <label htmlFor="email">Email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                />
+              </div>
+              <div className="form-row">
+                <label htmlFor="subject">Subject</label>
+                <input id="subject" name="subject" type="text" required />
+              </div>
+              <div className="form-row">
+                <label htmlFor="message">Message</label>
+                <textarea id="message" name="message" rows={6} required />
+              </div>
+              <button type="submit">Send message</button>
+            </form>
+          </div>
+        </div>
       </section>
       <Footer />
     </>

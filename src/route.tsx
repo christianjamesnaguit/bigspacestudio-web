@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
 import Services from "./pages/services";
 import Portfolio from "./pages/portfolio";
+import FAQ from "./pages/faq";
 import Contacts from "./pages/contacts";
 import Booking from "./pages/booking";
 
@@ -12,6 +13,7 @@ function Routing() {
       <Route path="/" element={<Home />} />
       <Route path="/services" element={<Services />} />
       <Route path="/portfolio" element={<Portfolio />} />
+      <Route path="/faq" element={<FAQ />} />
       <Route path="/contacts" element={<Contacts />} />
       <Route path="/booking" element={<Booking />} />
     </Routes>

@@ -55,6 +55,7 @@ h1 {
 
 .why-header {
   text-align: center;
+  margin-block: 1.5em;
 }
 
 .why-content {
@@ -92,8 +93,8 @@ h2 {
 }
 
 .about-image {
-  max-width: 100%;
-  height: 500px;
+  width: 550px;
+  height: 600px;
   border-radius: 5px;
 }
 
@@ -125,52 +126,4 @@ h2 {
   max-width: 50%;
   padding: 1em;
   margin: 1em;
-}
-
-/* faq */
-.faq-section {
-  display: flex;
-  align-items: flex-start;
-  justify-content: left;
-}
-
-.faq-header {
-  font-size: 4em;
-  margin-top: 0;
-}
-
-.faq-left {
-  max-width: 50%;
-  padding: 1em;
-  margin: 1em;
-}
-
-.faq-right {
-  max-width: 50%;
-  padding: 1em;
-  margin: 1em;
-}
-
-details {
-  margin-bottom: 1.5em;
-}
-
-details p {
-  font-size: 1em;
-}
-
-summary {
-  font-size: 1.5em;
-  font-weight: 900;
-  margin-bottom: 0.5em;
-  user-select: none;
-}
-
-summary:hover {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.faq-answers {
-  max-width: 600px;
 }

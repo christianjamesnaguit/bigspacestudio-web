@@ -19,6 +19,9 @@ function Header() {
                 <Link to="/portfolio">Portfolio</Link>
               </li>
               <li>
+                <Link to="/faq">FAQ</Link>
+              </li>
+              <li>
                 <Link to="/contacts">Contact</Link>
               </li>
               <li>
