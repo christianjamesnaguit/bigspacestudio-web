@@ -1,0 +1,54 @@
+@import "./admin.css";
+
+.table-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.table-toolbar span {
+	color: #707070;
+	font-size: 0.9rem;
+}
+
+.booking-table {
+	overflow-x: auto;
+}
+
+.table-row {
+	display: grid;
+	grid-template-columns: 1.4fr 1.2fr 1fr 0.8fr;
+	align-items: center;
+	gap: 1rem;
+	min-width: 680px;
+	padding: 1rem 0;
+	border-top: 1px solid #e8e8e4;
+	color: #666666;
+	font-size: 0.9rem;
+}
+
+.table-row span {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.table-row strong {
+	color: #171717;
+}
+
+.table-header {
+	padding: 0.5rem 0 0.75rem;
+	border-top: 0;
+	color: #888888;
+	font-size: 0.75rem;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.status-cancelled {
+	background: #eeeeee;
+	color: #666666 !important;
+}

@@ -25,6 +25,15 @@ function Header() {
                 <Link to="/contacts">Contact</Link>
               </li>
               <li>
+                <Link to="/admin">Admin</Link>
+              </li>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+              <li>
+                <Link to="/signup">Sign Up</Link>
+              </li>
+              <li>
                 <Link to="/booking" className="nav-button">
                   Book Now!
                 </Link>
