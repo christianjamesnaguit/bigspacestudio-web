@@ -47,7 +47,7 @@ function Signup() {
 					<Link className="auth-back" to="/">Return to Site</Link>
 				</div>
 				<div className="auth-heading">
-					<p className="auth-eyebrow">Admin portal</p>
+					<p className="auth-eyebrow">Session Portal</p>
 					<h1 id="signup-title">Create an account</h1>
 					<p>Set up your account to start managing studio work.</p>
 				</div>

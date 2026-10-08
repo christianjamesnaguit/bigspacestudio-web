@@ -41,7 +41,13 @@ function Contacts() {
             <p>Monday - Friday <br />9:00 AM - 5:00 PM</p>
           </div>
           <div className="maps">
-            <p>google maps work in progress</p>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3851.4791863796663!2d120.59099577588056!3d15.132006163844105!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3396f30014b3d4f7%3A0x92f18fdab4527e58!2sBig%20Space%20Studio!5e0!3m2!1sen!2sph!4v1791448508532!5m2!1sen!2sph"
+              title="Big Space Studio location"
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
           </div>
         </div>
       </section>

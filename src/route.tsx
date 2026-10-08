@@ -14,6 +14,7 @@ import Schedules from "./pages/dashboard/admin/schedules";
 import Login from "./pages/dashboard/login";
 import Signup from "./pages/dashboard/signup";
 import Recover from "./pages/dashboard/recover";
+import { Forbidden, NotFound, ServerError } from "./pages/errors";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth();
@@ -41,6 +42,9 @@ function Routing() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/recover" element={<Recover />} />
+      <Route path="/403" element={<Forbidden />} />
+      <Route path="/500" element={<ServerError />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

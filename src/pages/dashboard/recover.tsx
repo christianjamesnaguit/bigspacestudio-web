@@ -51,7 +51,7 @@ function Recover() {
 				<div className="auth-heading">
 					<p className="auth-eyebrow">Account recovery</p>
 					<h1 id="recover-title">{token ? "Choose a new password" : "Reset your password"}</h1>
-					<p>{token ? "Create a new password for your account." : "Enter your email and we&apos;ll send you a link to reset your password."}</p>
+					<p>{token ? "Create a new password for your account." : "Enter your email and we will send you a link to reset your password."}</p>
 				</div>
 
 				<form className="auth-form" onSubmit={handleSubmit}>

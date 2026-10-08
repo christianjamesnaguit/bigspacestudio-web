@@ -10,7 +10,7 @@ p {
 .hero-section {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 .hero-right {

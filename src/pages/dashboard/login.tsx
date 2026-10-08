@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getApiError, login } from "../../api/auth";
 import { useAuth } from "../../api/use-auth";
 import "./auth.css";
 
-function Login() {
+type LoginProps = {
+	modal?: boolean;
+	onClose?: () => void;
+};
+
+function Login({ modal = false, onClose }: LoginProps) {
 	const navigate = useNavigate();
 	const { authenticate } = useAuth();
 	const [email, setEmail] = useState("");
@@ -13,6 +18,21 @@ function Login() {
 	const [remember, setRemember] = useState(false);
 	const [error, setError] = useState("");
 	const [isSubmitting, setIsSubmitting] = useState(false);
+
+	useEffect(() => {
+		if (!modal) {
+			return;
+		}
+
+		function handleKeyDown(event: KeyboardEvent) {
+			if (event.key === "Escape") {
+				onClose?.();
+			}
+		}
+
+		document.addEventListener("keydown", handleKeyDown);
+		return () => document.removeEventListener("keydown", handleKeyDown);
+	}, [modal, onClose]);
 
 	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -33,17 +53,22 @@ function Login() {
 		}
 	}
 
-	return (
-		<main className="auth-page">
+	const content = (
 			<section className="auth-card" aria-labelledby="login-title">
 				<div className="auth-topbar">
 					<span className="auth-brand">
 						BIG SPACE STUDIO
 					</span>
-					<Link className="auth-back" to="/">Return to Site</Link>
+					{modal ? (
+						<button className="auth-close" type="button" onClick={onClose} aria-label="Close login">
+							&times;
+						</button>
+					) : (
+						<Link className="auth-back" to="/">Return to Site</Link>
+					)}
 				</div>
 				<div className="auth-heading">
-					<p className="auth-eyebrow">Admin portal</p>
+					<p className="auth-eyebrow">Session Portal</p>
 					<h1 id="login-title">Welcome back</h1>
 					<p>Log in to manage your studio bookings and schedule.</p>
 				</div>
@@ -52,16 +77,16 @@ function Login() {
 					<label htmlFor="login-email">Email address</label>
 					<input id="login-email" name="email" type="email" placeholder="you@example.com" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
 
-					<div className="auth-label-row">
-						<label htmlFor="login-password">Password</label>
-						<Link to="/recover">Forgot password?</Link>
-					</div>
+					<label htmlFor="login-password">Password</label>
 					<input id="login-password" name="password" type="password" placeholder="Enter your password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} required />
 
-					<label className="checkbox-label">
-						<input name="remember" type="checkbox" checked={remember} onChange={(event) => setRemember(event.target.checked)} />
-						Remember me
-					</label>
+					<div className="auth-options">
+						<label className="checkbox-label">
+							<input name="remember" type="checkbox" checked={remember} onChange={(event) => setRemember(event.target.checked)} />
+							Remember me
+						</label>
+						<Link to="/recover">Forgot password?</Link>
+					</div>
 
 					{error && <p className="auth-error" role="alert">{error}</p>}
 					<button type="submit" disabled={isSubmitting}>{isSubmitting ? "Logging in..." : "Log in"}</button>
@@ -71,6 +96,23 @@ function Login() {
 					Don&apos;t have an account? <Link to="/signup">Create one</Link>
 				</p>
 			</section>
+	);
+
+	if (modal) {
+		return (
+			<div className="auth-modal" role="dialog" aria-modal="true" aria-labelledby="login-title" onMouseDown={(event) => {
+				if (event.target === event.currentTarget) {
+					onClose?.();
+				}
+			}}>
+				{content}
+			</div>
+		);
+	}
+
+	return (
+		<main className="auth-page">
+			{content}
 		</main>
 	);
 }

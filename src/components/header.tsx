@@ -1,9 +1,12 @@
 import "./styles.css";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../api/use-auth";
+import Login from "../pages/dashboard/login";
 
 function Header() {
   const { user } = useAuth();
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   return (
     <>
@@ -11,7 +14,7 @@ function Header() {
         <div className="header-margin">
           <img src="/src/assets/logo.jpg" alt="Logo" className="logo" />
           <nav>
-            <ul>
+            <ul className="primary-nav">
               <li>
                 <Link to="/">Home</Link>
               </li>
@@ -27,6 +30,10 @@ function Header() {
               <li>
                 <Link to="/contacts">Contact</Link>
               </li>
+            </ul>
+          </nav>
+          <nav>
+            <ul className="account-nav">
               {user ? (
                 <li>
                   <Link to="/admin">Admin</Link>
@@ -34,10 +41,9 @@ function Header() {
               ) : (
                 <>
                   <li>
-                    <Link to="/login">Login</Link>
-                  </li>
-                  <li>
-                    <Link to="/signup">Sign Up</Link>
+                    <button className="header-link" type="button" onClick={() => setIsLoginOpen(true)}>
+                      Login
+                    </button>
                   </li>
                 </>
               )}
@@ -50,6 +56,7 @@ function Header() {
           </nav>
         </div>
       </header>
+      {isLoginOpen && <Login modal onClose={() => setIsLoginOpen(false)} />}
     </>
   );
 }
