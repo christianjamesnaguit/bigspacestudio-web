@@ -10,7 +10,7 @@ p {
 .hero-section {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .hero-right {
@@ -30,6 +30,12 @@ p {
 .hero-image {
   max-width: 100%;
   height: 500px;
+  border-radius: 10px;
+}
+
+.hero-video {
+  max-width: 100%;
+  height: 600px;
   border-radius: 10px;
 }
 

@@ -1,6 +1,6 @@
 import Header from "../components/header.tsx";
 import Footer from "../components/footer.tsx";
-import Carousel from "../components/carousel.tsx";
+// import Carousel from "../components/carousel.tsx";
 import Showcase from "../components/showcase.tsx";
 import { Link } from "react-router-dom";
 import "./styles/home.css";
@@ -28,7 +28,10 @@ function Home() {
             </div>
           </div>
           <div className="hero-right">
-            <Carousel />
+            {/* <Carousel /> */}
+            <video className="hero-video" autoPlay muted loop playsInline>
+                <source src="/videos/SBA_BSS_REEL.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
       </section>

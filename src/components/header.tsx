@@ -1,7 +1,10 @@
 import "./styles.css";
 import { Link } from "react-router-dom";
+import { useAuth } from "../api/use-auth";
 
 function Header() {
+  const { user } = useAuth();
+
   return (
     <>
       <header>
@@ -24,15 +27,20 @@ function Header() {
               <li>
                 <Link to="/contacts">Contact</Link>
               </li>
-              <li>
-                <Link to="/admin">Admin</Link>
-              </li>
-              <li>
-                <Link to="/login">Login</Link>
-              </li>
-              <li>
-                <Link to="/signup">Sign Up</Link>
-              </li>
+              {user ? (
+                <li>
+                  <Link to="/admin">Admin</Link>
+                </li>
+              ) : (
+                <>
+                  <li>
+                    <Link to="/login">Login</Link>
+                  </li>
+                  <li>
+                    <Link to="/signup">Sign Up</Link>
+                  </li>
+                </>
+              )}
               <li>
                 <Link to="/booking" className="nav-button">
                   Book Now!

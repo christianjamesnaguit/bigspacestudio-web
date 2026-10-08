@@ -1,7 +1,19 @@
 import "./styles.css";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../api/use-auth";
 
 function Sidebar() {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  async function handleLogout() {
+    try {
+      await logout();
+    } finally {
+      navigate("/");
+    }
+  }
+
   return (
     <aside className="dashboard-sidebar">
       <Link className="sidebar-brand" to="/admin">
@@ -50,7 +62,7 @@ function Sidebar() {
         <Link className="sidebar-link" to="/">
           Return to site
         </Link>
-        <button className="sidebar-link sidebar-logout" type="button">
+        <button className="sidebar-link sidebar-logout" type="button" onClick={handleLogout}>
           Logout
         </button>
       </nav>

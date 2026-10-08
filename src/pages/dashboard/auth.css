@@ -140,6 +140,26 @@
 	background: #444444;
 }
 
+.auth-form button:disabled {
+	background: #777777;
+	cursor: wait;
+}
+
+.auth-error,
+.auth-success {
+	margin: 0.2rem 0 0.4rem;
+	font-size: 0.85rem;
+	line-height: 1.4;
+}
+
+.auth-error {
+	color: #a12626;
+}
+
+.auth-success {
+	color: #286b42;
+}
+
 .auth-switch {
 	margin: 2rem 0 0;
 	color: #666666;
