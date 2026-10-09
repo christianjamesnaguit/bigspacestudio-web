@@ -1,5 +1,7 @@
 .admin-body {
 	margin-left: 220px;
+	width: calc(100% - 220px);
+	max-width: 1600px;
 	min-height: 100vh;
 	box-sizing: border-box;
 	padding: 2.5rem;
@@ -83,7 +85,7 @@
 	font-weight: 700;
 }
 
-button {
+.admin-body button {
 	border: 0;
 	border-radius: 3px;
 	background: #171717;
@@ -94,7 +96,7 @@ button {
 	padding: 0.7rem 1rem;
 }
 
-button:hover {
+.admin-body button:hover {
 	background: #444444;
 }
 
@@ -129,6 +131,7 @@ button:hover {
 }
 
 .activity-row div {
+	min-width: 0;
 	display: flex;
 	flex-direction: column;
 	gap: 0.25rem;
@@ -146,6 +149,7 @@ button:hover {
 
 .masterlist {
 	overflow-x: auto;
+	overscroll-behavior-inline: contain;
 	margin-top: 1.25rem;
 }
 
@@ -210,6 +214,7 @@ button:hover {
 @media (max-width: 900px) {
 	.admin-body {
 		margin-left: 0;
+		width: 100%;
 		padding: 2rem;
 	}
 
@@ -221,6 +226,11 @@ button:hover {
 @media (max-width: 640px) {
 	.admin-body {
 		padding: 1.5rem;
+	}
+
+	.dashboard-panel,
+	.stat-card {
+		padding: 1rem;
 	}
 
 	.stats-grid {

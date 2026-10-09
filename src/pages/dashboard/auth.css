@@ -25,7 +25,7 @@
 .auth-card {
 	width: min(100%, 430px);
 	box-sizing: border-box;
-	padding: 2.5rem;
+	padding: clamp(1.25rem, 5vw, 2.5rem);
 	border: 1px solid #deded9;
 	border-radius: 10px;
 	background: #ffffff;
@@ -203,11 +203,21 @@
 }
 
 @media (max-width: 480px) {
+	.auth-page,
+	.auth-modal {
+		padding: 1rem;
+	}
+
 	.auth-card {
-		padding: 2rem 1.25rem;
+		padding: 1.5rem 1rem;
 	}
 
 	.auth-heading {
 		margin-top: 2.25rem;
+	}
+
+	.auth-options {
+		align-items: flex-start;
+		flex-direction: column;
 	}
 }

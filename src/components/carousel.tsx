@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./styles.css";
 
 const images = [
@@ -11,29 +11,33 @@ function Carousel() {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev">("next");
   const [isAnimating, setIsAnimating] = useState(false);
+  const animationTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const nextImage = () => {
-    if (isAnimating) return;
+  useEffect(() => {
+    return () => {
+      if (animationTimeout.current) {
+        clearTimeout(animationTimeout.current);
+      }
+    };
+  }, []);
 
-    setDirection("next");
+  const animateTo = (index: number, nextDirection: "next" | "prev") => {
+    if (isAnimating || index === current) return;
+
+    setDirection(nextDirection);
     setIsAnimating(true);
-
-    setTimeout(() => {
-      setCurrent((current + 1) % images.length);
+    animationTimeout.current = setTimeout(() => {
+      setCurrent(index);
       setIsAnimating(false);
     }, 400);
   };
 
+  const nextImage = () => {
+    animateTo((current + 1) % images.length, "next");
+  };
+
   const previousImage = () => {
-    if (isAnimating) return;
-
-    setDirection("prev");
-    setIsAnimating(true);
-
-    setTimeout(() => {
-      setCurrent((current - 1 + images.length) % images.length);
-      setIsAnimating(false);
-    }, 400);
+    animateTo((current - 1 + images.length) % images.length, "prev");
   };
 
   const nextIndex = (current + 1) % images.length;
@@ -41,51 +45,44 @@ function Carousel() {
 
   return (
     <div className="carousel">
-      <span className="carousel-arrow previous" onClick={previousImage}>
+      <button className="carousel-arrow previous" type="button" aria-label="Previous image" onClick={previousImage}>
         ‹
-      </span>
+      </button>
 
       <div className="carousel-content">
         <div className="carousel-window">
           <img
             src={images[current]}
             className={`carousel-image current ${isAnimating ? direction : ""}`}
-            alt=""
+            alt={`Studio portfolio image ${current + 1}`}
           />
 
           {isAnimating && (
             <img
               src={images[direction === "next" ? nextIndex : previousIndex]}
               className={`carousel-image incoming ${direction}`}
-              alt=""
+              alt={`Studio portfolio image ${direction === "next" ? nextIndex + 1 : previousIndex + 1}`}
             />
           )}
         </div>
 
         <div className="carousel-dots">
           {images.map((_, index) => (
-            <span
+            <button
               key={index}
+              type="button"
+              aria-label={`Show portfolio image ${index + 1}`}
+              aria-current={index === current ? "true" : undefined}
               className={`carousel-dot ${index === current ? "active" : ""}`}
-              onClick={() => {
-                if (!isAnimating && index !== current) {
-                  setDirection(index > current ? "next" : "prev");
-                  setIsAnimating(true);
-
-                  setTimeout(() => {
-                    setCurrent(index);
-                    setIsAnimating(false);
-                  }, 400);
-                }
-              }}
+              onClick={() => animateTo(index, index > current ? "next" : "prev")}
             />
           ))}
         </div>
       </div>
 
-      <span className="carousel-arrow next" onClick={nextImage}>
+      <button className="carousel-arrow next" type="button" aria-label="Next image" onClick={nextImage}>
         ›
-      </span>
+      </button>
     </div>
   );
 }

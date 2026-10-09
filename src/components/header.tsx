@@ -73,7 +73,12 @@ function Header() {
             <span />
             <span />
           </button>
-          <div id="mobile-menu" className={isMenuOpen ? "mobile-menu open" : "mobile-menu"}>
+          <div
+            id="mobile-menu"
+            className={isMenuOpen ? "mobile-menu open" : "mobile-menu"}
+            aria-hidden={!isMenuOpen}
+            hidden={!isMenuOpen}
+          >
             <ul>
               <li><Link to="/" onClick={closeMenu}>Home</Link></li>
               <li><Link to="/services" onClick={closeMenu}>Services</Link></li>

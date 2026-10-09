@@ -2,11 +2,13 @@
 
 .calendar-panel {
 	overflow-x: auto;
+	overscroll-behavior-inline: contain;
 	margin-top: 2rem;
 }
 
 .calendar-toolbar {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
 	gap: 1rem;
