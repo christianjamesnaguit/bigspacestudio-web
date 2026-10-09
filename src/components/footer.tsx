@@ -10,7 +10,7 @@ function Footer() {
             <h1 className="company-name">BIG SPACE STUDIO.</h1>
             <ul className="socials">
               <li>
-                <a href="#">
+                <a href="https://www.facebook.com/bigspacestudio/" target="_blank" rel="noopener noreferrer">
                   <img
                     src="/src/assets/facebook.png"
                     alt="Social"
@@ -19,7 +19,7 @@ function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="https://www.tiktok.com/@bigspace.studio" target="_blank" rel="noopener noreferrer">
                   <img
                     src="/src/assets/tiktok.png"
                     alt="Social"
@@ -28,7 +28,7 @@ function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="https://www.instagram.com/bigspacestudio/" target="_blank" rel="noopener noreferrer">
                   <img
                     src="/src/assets/instagram.png"
                     alt="Social"

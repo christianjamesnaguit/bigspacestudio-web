@@ -1,7 +1,23 @@
 import "./styles/books.css";
 import Sidebar from "../../../components/dashboard/sidebar.tsx";
+import { useEffect, useState } from "react";
+import { getApiError } from "../../../api/auth";
+import { getDashboardBookings, type DashboardBooking } from "../../../api/dashboard";
+
+function customerName(booking: DashboardBooking) {
+	return [booking.customer.first_name, booking.customer.last_name].filter(Boolean).join(" ") || booking.customer.email;
+}
 
 function Books() {
+	const [bookings, setBookings] = useState<DashboardBooking[]>([]);
+	const [error, setError] = useState("");
+
+	useEffect(() => {
+		getDashboardBookings()
+			.then(setBookings)
+			.catch((requestError) => setError(getApiError(requestError, "Unable to load bookings.")));
+	}, []);
+
 	return (
 		<>
 			<Sidebar />
@@ -16,13 +32,18 @@ function Books() {
 				</div>
 
 				<section className="dashboard-panel page-panel">
-					<div className="table-toolbar"><strong>All bookings</strong><span>12 upcoming</span></div>
+					<div className="table-toolbar"><strong>All bookings</strong><span>{bookings.length} total</span></div>
+					{error && <p role="alert">{error}</p>}
 					<div className="booking-table">
 						<div className="table-row table-header"><span>Customer</span><span>Session</span><span>Date</span><span>Status</span></div>
-						<div className="table-row"><span><strong>Northstar Records</strong></span><span>Mixing session</span><span>Oct 5, 2:00 PM</span><span className="status status-confirmed">Confirmed</span></div>
-						<div className="table-row"><span><strong>Maya Chen</strong></span><span>Portrait session</span><span>Oct 6, 10:00 AM</span><span className="status status-pending">Pending</span></div>
-						<div className="table-row"><span><strong>Lowlight Films</strong></span><span>Production day</span><span>Oct 9, 9:00 AM</span><span className="status status-confirmed">Confirmed</span></div>
-						<div className="table-row"><span><strong>Jordan Ellis</strong></span><span>Recording session</span><span>Oct 11, 1:00 PM</span><span className="status status-cancelled">Cancelled</span></div>
+						{bookings.map((booking) => (
+							<div className="table-row" key={booking.booking_id}>
+								<span><strong>{customerName(booking)}</strong></span>
+								<span>{booking.package.package_name}</span>
+								<span>{new Date(`${booking.schedule.schedule_date}T${booking.schedule.start_time}`).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</span>
+								<span className={`status status-${booking.booking_status}`}>{booking.booking_status}</span>
+							</div>
+						))}
 					</div>
 				</section>
 			</main>

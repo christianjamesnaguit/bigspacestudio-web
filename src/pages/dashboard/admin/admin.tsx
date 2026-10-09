@@ -1,7 +1,31 @@
 import "./styles/admin.css";
 import Sidebar from "../../../components/dashboard/sidebar.tsx";
+import { useEffect, useState } from "react";
+import { getApiError } from "../../../api/auth";
+import { getDashboardOverview, type DashboardBooking, type DashboardStats } from "../../../api/dashboard";
+
+function customerName(customer: DashboardBooking["customer"]) {
+  return [customer.first_name, customer.last_name].filter(Boolean).join(" ") || customer.email;
+}
+
+function bookingDate(booking: DashboardBooking) {
+  return `${new Date(`${booking.schedule.schedule_date}T${booking.schedule.start_time}`).toLocaleDateString()} ${new Date(`1970-01-01T${booking.schedule.start_time}`).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`;
+}
 
 function Admin() {
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [bookings, setBookings] = useState<DashboardBooking[]>([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    getDashboardOverview()
+      .then((data) => {
+        setStats(data.stats);
+        setBookings(data.bookings);
+      })
+      .catch((requestError) => setError(getApiError(requestError, "Unable to load dashboard data.")));
+  }, []);
+
   return (
     <>
       <Sidebar />
@@ -16,21 +40,22 @@ function Admin() {
           </div>
         </div>
 
+        {error && <p role="alert">{error}</p>}
         <div className="stats-grid">
           <article className="stat-card">
             <span>Upcoming bookings</span>
-            <strong>12</strong>
-            <small>3 new this week</small>
+            <strong>{stats?.upcoming_bookings ?? "—"}</strong>
+            <small>From the schedules table</small>
           </article>
           <article className="stat-card">
             <span>Active customers</span>
-            <strong>84</strong>
-            <small>8 returning this month</small>
+            <strong>{stats?.active_customers ?? "—"}</strong>
+            <small>Registered customer accounts</small>
           </article>
           <article className="stat-card">
             <span>Studio hours</span>
-            <strong>38h</strong>
-            <small>Scheduled this week</small>
+            <strong>{stats ? `${stats.studio_hours}h` : "—"}</strong>
+            <small>Scheduled in the next 7 days</small>
           </article>
         </div>
 
@@ -44,21 +69,14 @@ function Admin() {
               <a href="/admin/books">View all</a>
             </div>
             <div className="booking-list">
-              <div className="booking-row">
-                <div><strong>Northstar Records</strong><span>Mixing session</span></div>
-                <time>Today, 2:00 PM</time>
-                <span className="status status-confirmed">Confirmed</span>
-              </div>
-              <div className="booking-row">
-                <div><strong>Maya Chen</strong><span>Portrait session</span></div>
-                <time>Tomorrow, 10:00 AM</time>
-                <span className="status status-pending">Pending</span>
-              </div>
-              <div className="booking-row">
-                <div><strong>Lowlight Films</strong><span>Production day</span></div>
-                <time>Fri, 9:00 AM</time>
-                <span className="status status-confirmed">Confirmed</span>
-              </div>
+              {bookings.length === 0 && <p>No upcoming bookings.</p>}
+              {bookings.map((booking) => (
+                <div className="booking-row" key={booking.booking_id}>
+                  <div><strong>{customerName(booking.customer)}</strong><span>{booking.package.package_name}</span></div>
+                  <time>{bookingDate(booking)}</time>
+                  <span className={`status status-${booking.booking_status}`}>{booking.booking_status}</span>
+                </div>
+              ))}
             </div>
           </section>
 

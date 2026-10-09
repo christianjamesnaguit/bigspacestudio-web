@@ -25,9 +25,23 @@
 }
 
 .whole-item {
-  width: 700px;
+  width: min(700px, 100%);
   height: 800px;
   margin: 0.5em;
   object-fit: cover;
   border-radius: 5px;
+}
+
+@media (max-width: 900px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-item,
+  .whole-item {
+    width: min(100%, 700px);
+    height: auto;
+    max-height: 800px;
+    aspect-ratio: 1 / 1;
+  }
 }

@@ -207,9 +207,19 @@ button:hover {
 	color: #8a5b00 !important;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
 	.admin-body {
 		margin-left: 0;
+		padding: 2rem;
+	}
+
+	.dashboard-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 640px) {
+	.admin-body {
 		padding: 1.5rem;
 	}
 
@@ -224,5 +234,9 @@ button:hover {
 	.booking-row {
 		grid-template-columns: 1fr;
 		gap: 0.5rem;
+	}
+
+	.page-heading {
+		flex-direction: column;
 	}
 }

@@ -133,3 +133,70 @@ h2 {
   padding: 1em;
   margin: 1em;
 }
+
+@media (max-width: 900px) {
+  .hero-section,
+  .about-section,
+  .milestone-section {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .hero-right,
+  .about-left,
+  .about-right,
+  .milestone-left,
+  .milestone-right {
+    box-sizing: border-box;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+  }
+
+  .hero-right {
+    margin-top: 1.5rem;
+  }
+
+  .why-section {
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+  }
+
+  .about-image {
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+  }
+
+  .milestone-header,
+  .milestone-right p {
+    text-align: left;
+  }
+}
+
+@media (max-width: 600px) {
+  h1,
+  .about-header,
+  .milestone-header {
+    font-size: clamp(2rem, 11vw, 3.5rem);
+  }
+
+  .sub-section {
+    margin-block: 5rem;
+  }
+
+  .hero-text,
+  .cta-buttons,
+  .about-left,
+  .about-right,
+  .milestone-left,
+  .milestone-right {
+    margin: 0;
+    padding: 0;
+  }
+
+  .cta-buttons {
+    flex-wrap: wrap;
+  }
+}

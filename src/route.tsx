@@ -11,6 +11,7 @@ import Admin from "./pages/dashboard/admin/admin";
 import Books from "./pages/dashboard/admin/books";
 import Customers from "./pages/dashboard/admin/customers";
 import Schedules from "./pages/dashboard/admin/schedules";
+import Settings from "./pages/dashboard/admin/settings";
 import Login from "./pages/dashboard/login";
 import Signup from "./pages/dashboard/signup";
 import Recover from "./pages/dashboard/recover";
@@ -39,6 +40,7 @@ function Routing() {
       <Route path="/admin/books" element={<ProtectedRoute><Books /></ProtectedRoute>} />
       <Route path="/admin/customers" element={<ProtectedRoute><Customers /></ProtectedRoute>} />
       <Route path="/admin/schedules" element={<ProtectedRoute><Schedules /></ProtectedRoute>} />
+      <Route path="/admin/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/recover" element={<Recover />} />

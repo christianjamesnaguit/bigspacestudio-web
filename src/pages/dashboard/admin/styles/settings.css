@@ -1,0 +1,145 @@
+@import "./admin.css";
+
+.settings-layout {
+  display: grid;
+  gap: 1rem;
+  max-width: 900px;
+  margin-top: 2rem;
+}
+
+.settings-panel {
+  padding: 1.5rem;
+}
+
+.settings-panel-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #e8e8e4;
+}
+
+.settings-panel-heading h2 {
+  margin: 0;
+}
+
+.settings-panel-heading > p {
+  max-width: 280px;
+  margin: 0;
+  color: #707070;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.settings-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding-top: 1.25rem;
+}
+
+.settings-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  color: #444;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.settings-fields input:not([type="checkbox"]),
+.settings-fields select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 42px;
+  padding: 0.7rem 0.75rem;
+  border: 1px solid #cfcfca;
+  border-radius: 3px;
+  background: #fff;
+  color: #171717;
+  font: inherit;
+  font-weight: 400;
+}
+
+.settings-field-wide {
+  grid-column: 1 / -1;
+}
+
+.settings-checkbox {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start;
+  gap: 0.7rem;
+  font-weight: 400 !important;
+}
+
+.settings-checkbox input {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin-top: 0.15rem;
+  accent-color: #171717;
+}
+
+.settings-checkbox span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.settings-checkbox small {
+  color: #707070;
+  font-size: 0.85rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.settings-options {
+  display: grid;
+  gap: 1.1rem;
+  padding-top: 1.25rem;
+}
+
+.settings-notice {
+  max-width: 900px;
+  margin-top: 1.5rem;
+  padding: 0.8rem 1rem;
+  border-left: 3px solid #171717;
+  background: #eeeeeb;
+  color: #444;
+  font-size: 0.9rem;
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 640px) {
+  .settings-panel-heading {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .settings-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-field-wide {
+    grid-column: auto;
+  }
+
+  .settings-actions {
+    justify-content: stretch;
+  }
+
+  .settings-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .settings-layout {
+    max-width: none;
+  }
+}

@@ -69,7 +69,7 @@
 
 .maps iframe {
   display: block;
-  width: 800px;
+  width: 100%;
   height: 100%;
   border: 0;
   border-radius: 10px;
@@ -137,5 +137,10 @@
   .maps {
     width: 100%;
     height: 300px;
+  }
+
+  .contact-form {
+    max-width: none;
+    padding-top: 2rem;
   }
 }

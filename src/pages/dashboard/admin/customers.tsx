@@ -1,7 +1,19 @@
 import "./styles/customers.css";
 import Sidebar from "../../../components/dashboard/sidebar.tsx";
+import { useEffect, useState } from "react";
+import { getApiError } from "../../../api/auth";
+import { getDashboardCustomers } from "../../../api/dashboard";
 
 function Customers() {
+	const [customers, setCustomers] = useState<Awaited<ReturnType<typeof getDashboardCustomers>>>([]);
+	const [error, setError] = useState("");
+
+	useEffect(() => {
+		getDashboardCustomers()
+			.then(setCustomers)
+			.catch((requestError) => setError(getApiError(requestError, "Unable to load customers.")));
+	}, []);
+
 	return (
 		<>
 			<Sidebar />
@@ -16,12 +28,18 @@ function Customers() {
 				</div>
 
 				<section className="dashboard-panel page-panel">
-					<div className="table-toolbar"><strong>Customer history</strong><span>84 customers</span></div>
+					<div className="table-toolbar"><strong>Customer history</strong><span>{customers.length} customers</span></div>
+					{error && <p role="alert">{error}</p>}
 					<div className="booking-table">
 						<div className="table-row table-header"><span>Customer</span><span>Last session</span><span>Bookings</span><span>Lifetime value</span></div>
-						<div className="table-row"><span><strong>Maya Chen</strong><small>maya.chen@example.com</small></span><span>Oct 2, 2026</span><span>8</span><span>$2,480</span></div>
-						<div className="table-row"><span><strong>Northstar Records</strong><small>hello@northstar.test</small></span><span>Sep 28, 2026</span><span>14</span><span>$6,920</span></div>
-						<div className="table-row"><span><strong>Lowlight Films</strong><small>team@lowlight.test</small></span><span>Sep 19, 2026</span><span>5</span><span>$4,100</span></div>
+						{customers.map((customer) => (
+							<div className="table-row" key={customer.id}>
+								<span><strong>{[customer.first_name, customer.last_name].filter(Boolean).join(" ") || customer.email}</strong><small>{customer.email}</small></span>
+								<span>—</span>
+								<span>{customer.bookings_count}</span>
+								<span>₱{Number(customer.bookings_sum_total_price ?? 0).toLocaleString()}</span>
+							</div>
+						))}
 					</div>
 				</section>
 			</main>
