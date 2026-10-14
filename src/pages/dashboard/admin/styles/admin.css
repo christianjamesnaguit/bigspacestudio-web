@@ -211,7 +211,7 @@
 	color: #8a5b00 !important;
 }
 
-@media (max-width: 900px) {
+@media (min-width: 601px) and (max-width: 900px) {
 	.admin-body {
 		margin-left: 0;
 		width: 100%;
@@ -223,8 +223,11 @@
 	}
 }
 
-@media (max-width: 640px) {
+@media (max-width: 600px) {
 	.admin-body {
+		margin-left: 0;
+		width: 100%;
+		min-width: 0;
 		padding: 1.5rem;
 	}
 

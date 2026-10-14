@@ -52,7 +52,7 @@
 	text-align: left;
 }
 
-@media (max-width: 900px) {
+@media (min-width: 601px) and (max-width: 900px) {
 	.dashboard-sidebar {
 		position: static;
 		width: auto;
@@ -66,7 +66,19 @@
 	}
 }
 
-@media (max-width: 640px) {
+@media (max-width: 600px) {
+	.dashboard-sidebar {
+		position: static;
+		width: auto;
+		min-height: auto;
+		padding: 1rem;
+	}
+
+	.sidebar-nav {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
 	.dashboard-sidebar {
 		gap: 1rem;
 	}

@@ -18,7 +18,7 @@ function Header() {
       <header>
         <div className="header-margin">
           <img src="/src/assets/logo.jpg" alt="Logo" className="logo" />
-          <nav className="desktop-navigation">
+          <nav className="desktop-navigation desktop-only">
             <ul className="primary-nav">
               <li>
                 <Link to="/">Home</Link>
@@ -37,7 +37,7 @@ function Header() {
               </li>
             </ul>
           </nav>
-          <nav className="desktop-navigation">
+          <nav className="desktop-navigation desktop-only">
             <ul className="account-nav">
               {user ? (
                 <li>
@@ -60,7 +60,7 @@ function Header() {
             </ul>
           </nav>
         </div>
-        <nav className="mobile-navigation" aria-label="Mobile navigation">
+        <nav className="mobile-navigation mobile-only--flex tablet-only--flex" aria-label="Mobile navigation">
           <button
             className="mobile-menu-toggle"
             type="button"
@@ -88,12 +88,9 @@ function Header() {
               {user && <li><Link to="/admin" onClick={closeMenu}>Admin</Link></li>}
               {!user && (
                 <li>
-                  <button className="header-link" type="button" onClick={() => {
-                    closeMenu();
-                    setIsLoginOpen(true);
-                  }}>
+                  <Link to="/login" className="header-link" onClick={closeMenu}>
                     Login
-                  </button>
+                  </Link>
                 </li>
               )}
               <li><Link to="/booking" className="nav-button" onClick={closeMenu}>Book Now!</Link></li>

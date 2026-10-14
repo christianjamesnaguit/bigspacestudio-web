@@ -65,7 +65,18 @@
   text-decoration: underline;
 }
 
-@media (max-width: 480px) {
+@media (min-width: 601px) and (max-width: 900px) {
+  .error-content {
+    min-height: 400px;
+    padding: 4rem 1.5rem;
+  }
+
+  .error-code {
+    font-size: clamp(8rem, 20vw, 14rem);
+  }
+}
+
+@media (max-width: 600px) {
   .error-content {
     min-height: 360px;
     padding: 3rem 1.25rem;

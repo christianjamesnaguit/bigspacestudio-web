@@ -202,7 +202,18 @@
 	text-align: center;
 }
 
-@media (max-width: 480px) {
+@media (min-width: 601px) and (max-width: 900px) {
+	.auth-page,
+	.auth-modal {
+		padding: 1.5rem;
+	}
+
+	.auth-card {
+		width: min(100%, 480px);
+	}
+}
+
+@media (max-width: 600px) {
 	.auth-page,
 	.auth-modal {
 		padding: 1rem;
