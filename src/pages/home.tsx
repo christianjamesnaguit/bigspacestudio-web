@@ -3,38 +3,13 @@ import Footer from "../components/footer.tsx";
 import Carousel from "../components/carousel.tsx";
 import Showcase from "../components/showcase.tsx";
 import { Link } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import { useScrollReveal } from "../hooks/use-scroll-reveal";
 import "./styles/home.css";
 
 function Home() {
   const homeRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const home = homeRef.current;
-    if (!home) return;
-
-    const elements = home.querySelectorAll(".home-reveal");
-    if (!("IntersectionObserver" in window)) {
-      elements.forEach((element) => element.classList.add("is-visible"));
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15 },
-    );
-
-    elements.forEach((element) => observer.observe(element));
-
-    return () => observer.disconnect();
-  }, []);
+  useScrollReveal(homeRef);
 
   return (
     <>
@@ -147,19 +122,18 @@ function Home() {
               </p>
             </div>
             <div className="about-right home-reveal home-reveal--delay-100">
-              <img src="/template.png" alt="About Us" className="about-image" />
+              <img src="/images/what.jpg" alt="About Us" className="about-image" />
             </div>
           </div>
         </section>
         <section className="body-margin">
           <div className="milestone-section">
             <div className="milestone-left home-reveal">
-              <img src="/template.png" alt="About Us" className="about-image" />
+              <img src="/images/who.jpg" alt="Big Space Studio milestones" className="about-image" />
             </div>
             <div className="milestone-right home-reveal home-reveal--delay-100">
               <h1 className="milestone-header">MILESTONES</h1>
-              <p>1k+ satisfied clients</p>
-              <hr></hr>
+              <p>1k+ clients served</p>
               <p>10k+ photoshoots</p>
             </div>
           </div>

@@ -137,11 +137,10 @@ function Footer() {
           <div className="mobile-footer-links">
             <ul>
               <li><Link to="/">Home</Link></li>
-              <li><Link to="/#about">About</Link></li>
-              <li><Link to="/services">Packages</Link></li>
+              <li><Link to="/services">Services</Link></li>
+              <li><Link to="/portfolio">Portfolio</Link></li>
               <li><Link to="/faq">FAQs</Link></li>
               <li><Link to="/contacts">Contact</Link></li>
-              <li><Link to="/booking">Book Now</Link></li>
             </ul>
             <ul>
               <li><a href="#">Privacy Policy</a></li>

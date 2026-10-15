@@ -41,7 +41,7 @@ function Header() {
             <ul className="account-nav">
               {user ? (
                 <li>
-                  <Link to="/admin">Admin</Link>
+                  <Link to="/admin">Dashboard</Link>
                 </li>
               ) : (
                 <>
@@ -62,7 +62,7 @@ function Header() {
         </div>
         <nav className="mobile-navigation mobile-only--flex tablet-only--flex" aria-label="Mobile navigation">
           <button
-            className="mobile-menu-toggle"
+            className={isMenuOpen ? "mobile-menu-toggle open" : "mobile-menu-toggle"}
             type="button"
             aria-expanded={isMenuOpen}
             aria-controls="mobile-menu"
@@ -77,7 +77,7 @@ function Header() {
             id="mobile-menu"
             className={isMenuOpen ? "mobile-menu open" : "mobile-menu"}
             aria-hidden={!isMenuOpen}
-            hidden={!isMenuOpen}
+            inert={!isMenuOpen}
           >
             <ul>
               <li><Link to="/" onClick={closeMenu}>Home</Link></li>
@@ -85,7 +85,7 @@ function Header() {
               <li><Link to="/portfolio" onClick={closeMenu}>Portfolio</Link></li>
               <li><Link to="/faq" onClick={closeMenu}>FAQ</Link></li>
               <li><Link to="/contacts" onClick={closeMenu}>Contact</Link></li>
-              {user && <li><Link to="/admin" onClick={closeMenu}>Admin</Link></li>}
+              {user && <li><Link to="/admin" onClick={closeMenu}>Dashboard</Link></li>}
               {!user && (
                 <li>
                   <Link to="/login" className="header-link" onClick={closeMenu}>

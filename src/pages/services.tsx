@@ -2,16 +2,21 @@ import "./styles/services.css";
 import Header from "../components/header.tsx";
 import Footer from "../components/footer.tsx";
 import { Link } from "react-router-dom";
+import { useRef } from "react";
+import { useScrollReveal } from "../hooks/use-scroll-reveal";
 
 function Services() {
+  const servicesRef = useRef<HTMLElement>(null);
+  useScrollReveal(servicesRef);
+
   return (
     <>
       <Header />
-      <section className="body-margin">
-        <h1 className="service-header">Our Services</h1>
-        <hr></hr>
+      <main className="body-margin" ref={servicesRef}>
+        <h1 className="service-header home-reveal">Most Popular Services</h1>
+        <hr />
         <div className="services-container">
-          <div className="service-item">
+          <div className="service-item home-reveal">
             <h2>Service 1</h2>
             <p className="service-subtitle">100 PHP</p>
             <p>Description of Service 1</p>
@@ -19,7 +24,7 @@ function Services() {
               Book Now!
             </Link>
           </div>
-          <div className="service-item">
+          <div className="service-item home-reveal home-reveal--delay-100">
             <h2>Service 2</h2>
             <p className="service-subtitle">1,000 PHP</p>
             <p>Description of Service 2</p>
@@ -29,7 +34,7 @@ function Services() {
               Book Now!
             </Link>
           </div>
-          <div className="service-item">
+          <div className="service-item home-reveal home-reveal--delay-150">
             <h2>Service 3</h2>
             <p className="service-subtitle">10,000 PHP</p>
             <p>Description of Service 3</p>
@@ -43,7 +48,7 @@ function Services() {
           </div>
         </div>
         <section className="alternative-packages">
-          <div className="alternative-packages-header">
+          <div className="alternative-packages-header home-reveal">
             <div>
               <p className="section-eyebrow">MORE OPTIONS</p>
               <h2>Alternative Packages</h2>
@@ -66,7 +71,7 @@ function Services() {
             </div>
           </div>
           <div className="package-list">
-            <article className="package-card">
+            <article className="package-card home-reveal">
               <div>
                 <h3>Mini Portrait Package</h3>
                 <p className="package-price">₱2,000</p>
@@ -74,7 +79,7 @@ function Services() {
               </div>
               <Link to="/booking" className="package-link">View package</Link>
             </article>
-            <article className="package-card">
+            <article className="package-card home-reveal home-reveal--delay-100">
               <div>
                 <h3>Content Creator Package</h3>
                 <p className="package-price">₱4,000</p>
@@ -82,7 +87,7 @@ function Services() {
               </div>
               <Link to="/booking" className="package-link">View package</Link>
             </article>
-            <article className="package-card">
+            <article className="package-card home-reveal home-reveal--delay-150">
               <div>
                 <h3>Half-day Studio Package</h3>
                 <p className="package-price">₱5,500</p>
@@ -92,7 +97,7 @@ function Services() {
             </article>
           </div>
         </section>
-      </section>
+      </main>
       <Footer />
     </>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getApiError, login } from "../../api/auth";
@@ -18,6 +18,21 @@ function Login({ modal = false, onClose }: LoginProps) {
 	const [remember, setRemember] = useState(false);
 	const [error, setError] = useState("");
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [isClosing, setIsClosing] = useState(false);
+
+	const handleClose = useCallback(() => {
+		if (isClosing) {
+			return;
+		}
+
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			onClose?.();
+			return;
+		}
+
+		setIsClosing(true);
+		window.setTimeout(() => onClose?.(), 180);
+	}, [isClosing, onClose]);
 
 	useEffect(() => {
 		if (!modal) {
@@ -26,13 +41,13 @@ function Login({ modal = false, onClose }: LoginProps) {
 
 		function handleKeyDown(event: KeyboardEvent) {
 			if (event.key === "Escape") {
-				onClose?.();
+				handleClose();
 			}
 		}
 
 		document.addEventListener("keydown", handleKeyDown);
 		return () => document.removeEventListener("keydown", handleKeyDown);
-	}, [modal, onClose]);
+	}, [modal, handleClose]);
 
 	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -60,7 +75,7 @@ function Login({ modal = false, onClose }: LoginProps) {
 						BIG SPACE STUDIO
 					</span>
 					{modal ? (
-						<button className="auth-close" type="button" onClick={onClose} aria-label="Close login">
+						<button className="auth-close" type="button" onClick={handleClose} aria-label="Close login">
 							&times;
 						</button>
 					) : (
@@ -100,9 +115,9 @@ function Login({ modal = false, onClose }: LoginProps) {
 
 	if (modal) {
 		return (
-			<div className="auth-modal" role="dialog" aria-modal="true" aria-labelledby="login-title" onMouseDown={(event) => {
+			<div className={`auth-modal${isClosing ? " is-closing" : ""}`} role="dialog" aria-modal="true" aria-labelledby="login-title" onMouseDown={(event) => {
 				if (event.target === event.currentTarget) {
-					onClose?.();
+					handleClose();
 				}
 			}}>
 				{content}

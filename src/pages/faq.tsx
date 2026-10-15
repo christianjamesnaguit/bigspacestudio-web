@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./styles/faq.css";
 import Header from "../components/header.tsx";
 import Footer from "../components/footer.tsx";
+import { useScrollReveal } from "../hooks/use-scroll-reveal";
 
 const faqCategories = {
   BOOKING: [
@@ -40,13 +41,15 @@ type FaqCategory = keyof typeof faqCategories;
 
 function FAQ() {
   const [selectedCategory, setSelectedCategory] = useState<FaqCategory>("BOOKING");
+  const faqRef = useRef<HTMLElement>(null);
+  useScrollReveal(faqRef);
 
   return (
     <>
       <Header />
-      <section className="body-margin">
+      <main className="body-margin" ref={faqRef}>
         <div className="faq-section">
-          <div className="faq-left">
+          <div className="faq-left home-reveal">
             <h1 className="faq-header">FREQUENTLY ASKED QUESTIONS</h1>
             <p>This section provides answers to the most common questions about our services.</p>
             <label htmlFor="faq-category">Choose a category</label>
@@ -72,11 +75,11 @@ function FAQ() {
               ))}
             </div>
           </div>
-          <div className="faq-right">
+          <div className="faq-right home-reveal home-reveal--delay-100">
             <img src="/images/photo3.jpg" alt="Big Space Studio" />
           </div>
         </div>
-      </section>
+      </main>
       <Footer />
     </>
   );

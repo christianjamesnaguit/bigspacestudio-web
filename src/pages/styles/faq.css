@@ -81,6 +81,30 @@ summary:hover {
   max-width: 600px;
 }
 
+@supports selector(details::details-content) {
+  .faq-list details {
+    interpolate-size: allow-keywords;
+  }
+
+  .faq-list details::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition:
+      block-size 240ms ease,
+      content-visibility 240ms allow-discrete;
+  }
+
+  .faq-list details[open]::details-content {
+    block-size: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-list details::details-content {
+    transition: none;
+  }
+}
+
 @media (min-width: 601px) and (max-width: 900px) {
   .faq-section {
     flex-direction: column;

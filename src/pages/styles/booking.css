@@ -144,13 +144,15 @@
 
 .booking-date-fields {
   display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 0.65fr);
+  align-items: start;
   gap: 24px;
 }
 
 .booking-time-fields {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
+  grid-template-columns: 1fr;
+  gap: 20px;
 }
 
 .booking-field {
@@ -330,6 +332,12 @@
   margin: 8px 0 0;
   color: #555;
   line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .booking-date-fields {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (min-width: 601px) and (max-width: 800px) {

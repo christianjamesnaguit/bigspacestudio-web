@@ -22,6 +22,75 @@
 	background: rgb(23 23 23 / 55%);
 }
 
+@keyframes auth-modal-fade-in {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes auth-card-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px) scale(0.985);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+@keyframes auth-modal-fade-out {
+	from {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes auth-card-fade-out {
+	from {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+
+	to {
+		opacity: 0;
+		transform: translateY(8px) scale(0.985);
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.auth-modal {
+		animation: auth-modal-fade-in 180ms ease-out both;
+	}
+
+	.auth-modal .auth-card {
+		animation: auth-card-fade-in 240ms ease-out both;
+	}
+
+	.auth-modal.is-closing {
+		animation: auth-modal-fade-out 180ms ease-in both;
+	}
+
+	.auth-modal.is-closing .auth-card {
+		animation: auth-card-fade-out 180ms ease-in both;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.auth-modal,
+	.auth-modal .auth-card {
+		animation: none;
+	}
+}
+
 .auth-card {
 	width: min(100%, 430px);
 	box-sizing: border-box;
