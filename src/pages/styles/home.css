@@ -151,6 +151,38 @@
   margin: 1em;
 }
 
+@keyframes home-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-reveal {
+    opacity: 0;
+  }
+
+  .home-reveal.is-visible {
+    animation: home-fade-in 650ms ease-out both;
+  }
+
+  .home-reveal--delay-100.is-visible {
+    animation-delay: 100ms;
+  }
+
+  .home-reveal--delay-150.is-visible {
+    animation-delay: 150ms;
+  }
+
+  .home-reveal--delay-200.is-visible {
+    animation-delay: 200ms;
+  }
+}
+
 @media (min-width: 601px) and (max-width: 900px) {
   .hero-section,
   .about-section,

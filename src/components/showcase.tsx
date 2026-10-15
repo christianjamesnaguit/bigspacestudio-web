@@ -1,9 +1,12 @@
 import './styles.css'
 
 const images = [
-  '/images/photo1.jpg',
-  '/images/photo2.jpg',
-  '/images/photo3.jpg',
+  '/images/eg1.jpg',
+  '/images/eg2.jpg',
+  '/images/eg3.jpg',
+  '/images/eg4.jpg',
+  '/images/eg5.jpg',
+  '/images/eg6.jpg',
 ]
 
 function Showcase() {
