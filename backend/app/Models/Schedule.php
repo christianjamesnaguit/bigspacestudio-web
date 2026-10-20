@@ -31,7 +31,7 @@ class Schedule extends Model
     protected function casts(): array
     {
         return [
-            'schedule_date' => 'date',
+            'schedule_date' => 'date:Y-m-d',
             'start_time' => 'datetime:H:i:s',
             'end_time' => 'datetime:H:i:s',
         ];

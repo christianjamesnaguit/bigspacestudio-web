@@ -1,25 +1,24 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import SiteMediaContent from "../api/site-media-content";
+import { useSiteMedia } from "../api/site-media-context";
+import { defaultSiteMedia, getHomeMediaKeys } from "../api/site-media-defaults";
 import "./styles.css";
 
-type CarouselSlide =
-  | { type: "image"; src: string; alt: string }
-  | { type: "video"; src: string; alt: string };
-
-const slides: CarouselSlide[] = [
-  { type: "image", src: "/images/photo1.jpg", alt: "Studio portfolio image 1" },
-  { type: "image", src: "/images/photo2.jpg", alt: "Studio portfolio image 2" },
-  { type: "image", src: "/images/photo3.jpg", alt: "Studio portfolio image 3" },
-];
+const defaultSlides = Object.keys(defaultSiteMedia)
+  .filter((key) => key.startsWith("home.carousel."));
 
 function Carousel() {
+  const { media, isLoaded } = useSiteMedia();
+  const slides = isLoaded ? getHomeMediaKeys(media, "carousel") : defaultSlides;
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev">("next");
   const [isAnimating, setIsAnimating] = useState(false);
   const animationTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const activeIndex = Math.max(0, Math.min(current, slides.length - 1));
 
   const animateTo = useCallback(
     (index: number, nextDirection: "next" | "prev") => {
-      if (isAnimating || index === current) return;
+      if (isAnimating || index === activeIndex) return;
 
       setDirection(nextDirection);
       setIsAnimating(true);
@@ -28,7 +27,7 @@ function Carousel() {
         setIsAnimating(false);
       }, 400);
     },
-    [current, isAnimating],
+    [activeIndex, isAnimating],
   );
 
   useEffect(() => {
@@ -41,52 +40,29 @@ function Carousel() {
 
   useEffect(() => {
     if (isAnimating) return;
+    if (slides.length < 2) return;
 
     const autoplayInterval = window.setInterval(() => {
-      animateTo((current + 1) % slides.length, "next");
+      animateTo((activeIndex + 1) % slides.length, "next");
     }, 5000);
 
     return () => window.clearInterval(autoplayInterval);
-  }, [animateTo, current, isAnimating]);
+  }, [activeIndex, animateTo, isAnimating, slides.length]);
 
-  const renderSlide = (
-    slide: CarouselSlide,
-    className: string,
-  ) => {
-    if (slide.type === "video") {
-      return (
-        <video
-          key={slide.src}
-          src={slide.src}
-          className={className}
-          aria-label={slide.alt}
-          autoPlay
-          muted
-          playsInline
-          loop
-          preload="metadata"
-        />
-      );
-    }
+  const renderSlide = (mediaKey: string, className: string) => (
+    <SiteMediaContent key={media[mediaKey]?.url ?? mediaKey} mediaKey={mediaKey} className={className} />
+  );
 
-    return (
-      <img
-        key={slide.src}
-        src={slide.src}
-        className={className}
-        alt={slide.alt}
-      />
-    );
-  };
-
-  const nextImage = () => animateTo((current + 1) % slides.length, "next");
+  const nextImage = () => animateTo((activeIndex + 1) % slides.length, "next");
 
   const previousImage = () => {
-    animateTo((current - 1 + slides.length) % slides.length, "prev");
+    animateTo((activeIndex - 1 + slides.length) % slides.length, "prev");
   };
 
-  const nextIndex = (current + 1) % slides.length;
-  const previousIndex = (current - 1 + slides.length) % slides.length;
+  if (slides.length === 0) return null;
+
+  const nextIndex = (activeIndex + 1) % slides.length;
+  const previousIndex = (activeIndex - 1 + slides.length) % slides.length;
 
   return (
     <div className="carousel">
@@ -97,7 +73,7 @@ function Carousel() {
       <div className="carousel-content">
         <div className="carousel-window">
           {renderSlide(
-            slides[current],
+            slides[activeIndex],
             `carousel-media current ${isAnimating ? direction : ""}`,
           )}
 
@@ -115,9 +91,9 @@ function Carousel() {
               key={index}
               type="button"
               aria-label={`Show portfolio slide ${index + 1}`}
-              aria-current={index === current ? "true" : undefined}
-              className={`carousel-dot ${index === current ? "active" : ""}`}
-              onClick={() => animateTo(index, index > current ? "next" : "prev")}
+              aria-current={index === activeIndex ? "true" : undefined}
+              className={`carousel-dot ${index === activeIndex ? "active" : ""}`}
+              onClick={() => animateTo(index, index > activeIndex ? "next" : "prev")}
             />
           ))}
         </div>

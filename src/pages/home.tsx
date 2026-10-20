@@ -5,6 +5,7 @@ import Showcase from "../components/showcase.tsx";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
 import { useScrollReveal } from "../hooks/use-scroll-reveal";
+import SiteMediaContent from "../api/site-media-content";
 import "./styles/home.css";
 
 function Home() {
@@ -47,7 +48,7 @@ function Home() {
           </h1>
           <div className="why-section">
             <div className="why-content home-reveal">
-              <img src="/src/assets/premium.png" alt="PREMIUM QUALITY" />
+              <SiteMediaContent mediaKey="home.quality.premium" alt="PREMIUM QUALITY" />
               <h2>
                 PREMIUM
                 <br />
@@ -56,10 +57,7 @@ function Home() {
               <p>Professional lighting, equipment, and retouching</p>
             </div>
             <div className="why-content home-reveal home-reveal--delay-100">
-              <img
-                src="/src/assets/professional.png"
-                alt="PROFESSIONAL EXPERIENCE"
-              />
+              <SiteMediaContent mediaKey="home.quality.professional" alt="PROFESSIONAL EXPERIENCE" />
               <h2>
                 PROFESSIONAL
                 <br />
@@ -71,7 +69,7 @@ function Home() {
               </p>
             </div>
             <div className="why-content home-reveal home-reveal--delay-150">
-              <img src="/src/assets/comfort.png" alt="COMFORTABLE STUDIO" />
+              <SiteMediaContent mediaKey="home.quality.comfort" alt="COMFORTABLE STUDIO" />
               <h2>
                 COMFORTABLE
                 <br />
@@ -80,7 +78,7 @@ function Home() {
               <p>Private and comfortable environment</p>
             </div>
             <div className="why-content home-reveal home-reveal--delay-200">
-              <img src="/src/assets/beauty.png" alt="BEAUTIFUL RESULTS" />
+              <SiteMediaContent mediaKey="home.quality.beauty" alt="BEAUTIFUL RESULTS" />
               <h2>
                 BEAUTIFUL
                 <br />
@@ -122,14 +120,14 @@ function Home() {
               </p>
             </div>
             <div className="about-right home-reveal home-reveal--delay-100">
-              <img src="/images/what.jpg" alt="About Us" className="about-image" />
+              <SiteMediaContent mediaKey="home.about" alt="About Us" className="about-image" />
             </div>
           </div>
         </section>
         <section className="body-margin">
           <div className="milestone-section">
             <div className="milestone-left home-reveal">
-              <img src="/images/who.jpg" alt="Big Space Studio milestones" className="about-image" />
+              <SiteMediaContent mediaKey="home.milestones" alt="Big Space Studio milestones" className="about-image" />
             </div>
             <div className="milestone-right home-reveal home-reveal--delay-100">
               <h1 className="milestone-header">MILESTONES</h1>

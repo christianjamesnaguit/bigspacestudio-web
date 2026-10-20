@@ -29,7 +29,7 @@ function Signup() {
 		try {
 			const response = await register(firstName, lastName, email, password, passwordConfirmation);
 			authenticate(response.data.user);
-			navigate("/admin");
+			navigate("/");
 		} catch (requestError) {
 			setError(getApiError(requestError, "Unable to create your account. Please try again."));
 		} finally {

@@ -2,6 +2,7 @@ import "./styles.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../api/use-auth";
+import SiteMediaContent from "../api/site-media-content";
 import Login from "../pages/dashboard/login";
 
 function Header() {
@@ -17,7 +18,7 @@ function Header() {
     <>
       <header>
         <div className="header-margin">
-          <img src="/src/assets/logo.jpg" alt="Logo" className="logo" />
+          <SiteMediaContent mediaKey="brand.logo" alt="Logo" className="logo" />
           <nav className="desktop-navigation desktop-only">
             <ul className="primary-nav">
               <li>
@@ -40,17 +41,13 @@ function Header() {
           <nav className="desktop-navigation desktop-only">
             <ul className="account-nav">
               {user ? (
-                <li>
-                  <Link to="/admin">Dashboard</Link>
-                </li>
+                ["Admin", "Staff"].includes(user.role) && <li><Link to="/admin">Dashboard</Link></li>
               ) : (
-                <>
-                  <li>
-                    <button className="header-link" type="button" onClick={() => setIsLoginOpen(true)}>
-                      Login
-                    </button>
-                  </li>
-                </>
+                <li>
+                  <button className="header-link" type="button" onClick={() => setIsLoginOpen(true)}>
+                    Login
+                  </button>
+                </li>
               )}
               <li>
                 <Link to="/booking" className="nav-button">
@@ -85,7 +82,7 @@ function Header() {
               <li><Link to="/portfolio" onClick={closeMenu}>Portfolio</Link></li>
               <li><Link to="/faq" onClick={closeMenu}>FAQ</Link></li>
               <li><Link to="/contacts" onClick={closeMenu}>Contact</Link></li>
-              {user && <li><Link to="/admin" onClick={closeMenu}>Dashboard</Link></li>}
+              {user && ["Admin", "Staff"].includes(user.role) && <li><Link to="/admin" onClick={closeMenu}>Dashboard</Link></li>}
               {!user && (
                 <li>
                   <Link to="/login" className="header-link" onClick={closeMenu}>

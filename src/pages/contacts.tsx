@@ -1,20 +1,64 @@
 import "./styles/contacts.css";
 import Header from "../components/header.tsx";
 import Footer from "../components/footer.tsx";
-import { useRef } from "react";
+import emailjs from "@emailjs/browser";
+import { useRef, useState } from "react";
+import type { FormEvent } from "react";
 import { useScrollReveal } from "../hooks/use-scroll-reveal";
+import SiteMediaContent from "../api/site-media-content";
 
 function Contacts() {
   const contactsRef = useRef<HTMLElement>(null);
   const formRef = useRef<HTMLElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
   useScrollReveal(contactsRef);
   useScrollReveal(formRef);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setFeedback(null);
+
+    const { VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY } = import.meta.env;
+    if (!VITE_EMAILJS_SERVICE_ID || !VITE_EMAILJS_TEMPLATE_ID || !VITE_EMAILJS_PUBLIC_KEY) {
+      setFeedback({
+        type: "error",
+        message: "The contact form is not configured yet. Please contact us by email instead.",
+      });
+      return;
+    }
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    setIsSubmitting(true);
+    try {
+      await emailjs.send(
+        VITE_EMAILJS_SERVICE_ID,
+        VITE_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.get("name"),
+          from_email: formData.get("email"),
+          subject: formData.get("subject"),
+          message: formData.get("message"),
+        },
+        { publicKey: VITE_EMAILJS_PUBLIC_KEY },
+      );
+      form.reset();
+      setFeedback({ type: "success", message: "Your message has been sent. We'll be in touch soon." });
+    } catch (error) {
+      console.error("Failed to send contact form message:", error);
+      setFeedback({ type: "error", message: "We couldn't send your message. Please try again later." });
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <>
       <Header />
       <section className="body-margin" ref={contactsRef}>
         <div className="contact-hero home-reveal">
+          <SiteMediaContent mediaKey="contact.background" className="contact-hero-background" />
           <div className="contact-hero-intro">
             <h1 className="contact-header">We're here to help.</h1>
           </div>
@@ -28,7 +72,7 @@ function Contacts() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img className="contact-hero-social-logo" src="/src/assets/facebook.png" alt="" />
+                  <SiteMediaContent mediaKey="social.facebook" className="contact-hero-social-logo" alt="" />
                   <span className="contact-hero-social-handle">@bigspacestudio</span>
                 </a>
                 <a
@@ -37,7 +81,7 @@ function Contacts() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img className="contact-hero-social-logo" src="/src/assets/messenger.png" alt="" />
+                  <SiteMediaContent mediaKey="social.messenger" className="contact-hero-social-logo" alt="" />
                   <span className="contact-hero-social-handle">Big Space Studio</span>
                 </a>
                 <a
@@ -46,7 +90,7 @@ function Contacts() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img className="contact-hero-social-logo" src="/src/assets/instagram.png" alt="" />
+                  <SiteMediaContent mediaKey="social.instagram" className="contact-hero-social-logo" alt="" />
                   <span className="contact-hero-social-handle">@bigspacestudio</span>
                 </a>
                 <a
@@ -55,7 +99,7 @@ function Contacts() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img className="contact-hero-social-logo" src="/src/assets/tiktok.png" alt="" />
+                  <SiteMediaContent mediaKey="social.tiktok" className="contact-hero-social-logo" alt="" />
                   <span className="contact-hero-social-handle">@bigspace.studio</span>
                 </a>
               </div>
@@ -79,13 +123,13 @@ function Contacts() {
             </div>
             <hr />
             <div className="studio-detail">
-              <img src="/src/assets/icons/building.svg" alt="Building" />
+              <SiteMediaContent mediaKey="contact.icon.building" alt="Building" />
               <p>2nd Floor, Franches Building, <br></br>Santo Rosario St, San Jose,{" "}
                 <br></br>Angeles, Pampanga</p>
             </div>
             <hr></hr>
             <div className="studio-detail">
-              <img src="/src/assets/icons/hourglass.svg" alt="Clock" />
+              <SiteMediaContent mediaKey="contact.icon.hours" alt="Clock" />
               <p>Monday - Saturday <br />9:00 AM - 5:00 PM</p>
             </div>
           </div>
@@ -103,7 +147,7 @@ function Contacts() {
       <section className="body-margin" ref={formRef}>
           <div className="contact-form home-reveal">
             <h2>Still have questions? Send us a message and let us know.</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="form-row">
                 <label htmlFor="name">Name</label>
                 <input id="name" name="name" type="text" autoComplete="name" required />
@@ -126,7 +170,14 @@ function Contacts() {
                 <label htmlFor="message">Message</label>
                 <textarea id="message" name="message" rows={6} required />
               </div>
-              <button type="submit">Send message</button>
+              {feedback && (
+                <p className={`contact-form-feedback contact-form-feedback--${feedback.type}`} role={feedback.type === "error" ? "alert" : "status"}>
+                  {feedback.message}
+                </p>
+              )}
+              <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Sending..." : "Send message"}
+              </button>
             </form>
           </div>
       </section>

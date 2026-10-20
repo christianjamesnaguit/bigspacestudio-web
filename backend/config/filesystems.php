@@ -14,6 +14,7 @@ return [
     */
 
     'default' => env('FILESYSTEM_DISK', 'local'),
+    'home_gallery_path' => env('HOME_GALLERY_PATH', base_path('../public/images')),
 
     /*
     |--------------------------------------------------------------------------

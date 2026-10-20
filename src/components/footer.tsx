@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SiteMediaContent from "../api/site-media-content";
 import "./styles.css";
 
 function Footer() {
@@ -11,29 +12,17 @@ function Footer() {
             <ul className="socials">
               <li>
                 <a href="https://www.facebook.com/bigspacestudio/" target="_blank" rel="noopener noreferrer">
-                  <img
-                    src="/src/assets/facebook.png"
-                    alt="Social"
-                    className="social"
-                  />
+                  <SiteMediaContent mediaKey="social.facebook" alt="Social" className="social" />
                 </a>
               </li>
               <li>
                 <a href="https://www.tiktok.com/@bigspace.studio" target="_blank" rel="noopener noreferrer">
-                  <img
-                    src="/src/assets/tiktok.png"
-                    alt="Social"
-                    className="social"
-                  />
+                  <SiteMediaContent mediaKey="social.tiktok" alt="Social" className="social" />
                 </a>
               </li>
               <li>
                 <a href="https://www.instagram.com/bigspacestudio/" target="_blank" rel="noopener noreferrer">
-                  <img
-                    src="/src/assets/instagram.png"
-                    alt="Social"
-                    className="social"
-                  />
+                  <SiteMediaContent mediaKey="social.instagram" alt="Social" className="social" />
                 </a>
               </li>
               <li>
@@ -85,19 +74,11 @@ function Footer() {
             </p>
             <ul className="contacts">
               <li>
-                <img
-                  src="/src/assets/icons/phone.svg"
-                  alt="Phone"
-                  className="contact"
-                />{" "}
+                <SiteMediaContent mediaKey="footer.icon.phone" alt="Phone" className="contact" />{" "}
                 +63 0912 345 6789
               </li>
               <li>
-                <img
-                  src="/src/assets/icons/email.svg"
-                  alt="Email"
-                  className="contact"
-                />{" "}
+                <SiteMediaContent mediaKey="footer.icon.email" alt="Email" className="contact" />{" "}
                 Bigspace@gmail.com
               </li>
             </ul>
@@ -123,11 +104,11 @@ function Footer() {
               </p>
               <ul className="mobile-footer-contacts">
                 <li>
-                  <img src="/src/assets/icons/phone.svg" alt="" />
+                  <SiteMediaContent mediaKey="footer.icon.phone" />
                   <span>+63 0912 345 6789</span>
                 </li>
                 <li>
-                  <img src="/src/assets/icons/email.svg" alt="" />
+                  <SiteMediaContent mediaKey="footer.icon.email" />
                   <span>Bigspace@gmail.com</span>
                 </li>
               </ul>

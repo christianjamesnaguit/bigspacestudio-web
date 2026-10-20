@@ -1,6 +1,7 @@
 import "./styles/admin.css";
 import Sidebar from "../../../components/dashboard/sidebar.tsx";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getApiError } from "../../../api/auth";
 import { getDashboardOverview, type DashboardBooking, type DashboardStats } from "../../../api/dashboard";
 
@@ -83,14 +84,14 @@ function Admin() {
           <section className="dashboard-panel activity-panel">
             <div className="panel-heading">
               <div>
-                <p className="eyebrow">Latest updates</p>
-                <h2>Recent activity</h2>
+                <p className="eyebrow">Workspace</p>
+                <h2>Manage your studio</h2>
               </div>
             </div>
             <div className="activity-list">
-              <div className="activity-row"><span className="activity-dot" /><div><strong>Booking confirmed</strong><span>Northstar Records confirmed a mixing session.</span><time>15 minutes ago</time></div></div>
-              <div className="activity-row"><span className="activity-dot" /><div><strong>New customer added</strong><span>Maya Chen was added to the customer list.</span><time>2 hours ago</time></div></div>
-              <div className="activity-row"><span className="activity-dot" /><div><strong>Schedule updated</strong><span>Lowlight Films moved to Friday at 9:00 AM.</span><time>Yesterday</time></div></div>
+              <div className="activity-row"><span className="activity-dot" /><div><strong><Link to="/admin/books">Manage bookings</Link></strong><span>Create, update, and cancel studio bookings.</span></div></div>
+              <div className="activity-row"><span className="activity-dot" /><div><strong><Link to="/admin/customers">Manage customers</Link></strong><span>Maintain customer records and account details.</span></div></div>
+              <div className="activity-row"><span className="activity-dot" /><div><strong><Link to="/admin/schedules">Manage schedule</Link></strong><span>Add studio availability and block time slots.</span></div></div>
             </div>
           </section>
         </div>
@@ -98,16 +99,23 @@ function Admin() {
         <section className="dashboard-panel masterlist-panel">
           <div className="panel-heading">
             <div>
-                <p className="eyebrow">Customer records</p>
-                <h2>Customer masterlist</h2>
+                <p className="eyebrow">Booking records</p>
+                <h2>Upcoming booking list</h2>
             </div>
               <a href="/admin/books">View bookings</a>
           </div>
           <div className="masterlist">
-            <div className="masterlist-row masterlist-header"><span>Client name</span><span>Type of shoot</span><span>Price</span><span>Photographer</span><span>Shoot date</span><span>Deadline</span></div>
-            <div className="masterlist-row"><strong>Maya Chen</strong><span>Portrait session</span><span>$480</span><span>Jamie Lee</span><span>Oct 6, 2026</span><span>Oct 10, 2026</span></div>
-            <div className="masterlist-row"><strong>Northstar Records</strong><span>Mixing session</span><span>$1,200</span><span>Alex Rivera</span><span>Oct 5, 2026</span><span>Oct 12, 2026</span></div>
-            <div className="masterlist-row"><strong>Lowlight Films</strong><span>Production day</span><span>$2,400</span><span>Sam Patel</span><span>Oct 9, 2026</span><span>Oct 16, 2026</span></div>
+            <div className="masterlist-row masterlist-header"><span>Client name</span><span>Package</span><span>Price</span><span>Date</span><span>Status</span></div>
+            {bookings.map((booking) => (
+              <div className="masterlist-row" key={booking.booking_id}>
+                <strong>{customerName(booking.customer)}</strong>
+                <span>{booking.package.package_name}</span>
+                <span>₱{Number(booking.total_price).toLocaleString()}</span>
+                <span>{bookingDate(booking)}</span>
+                <span className={`status status-${booking.booking_status}`}>{booking.booking_status}</span>
+              </div>
+            ))}
+            {bookings.length === 0 && <p>No upcoming bookings.</p>}
           </div>
         </section>
       </section>

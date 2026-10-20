@@ -127,6 +127,14 @@
   max-width: 250px;
 }
 
+.why-content > img,
+.why-content > video {
+  display: block;
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
 .why-content h2,
 .about-left h2 {
   font-size: 1.5em;

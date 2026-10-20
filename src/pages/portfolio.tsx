@@ -3,6 +3,7 @@ import Header from "../components/header.tsx";
 import Footer from "../components/footer.tsx";
 import { useRef } from "react";
 import { useScrollReveal } from "../hooks/use-scroll-reveal";
+import SiteMediaContent from "../api/site-media-content";
 
 function Portfolio() {
   const portfolioRef = useRef<HTMLElement>(null);
@@ -15,58 +16,26 @@ function Portfolio() {
       <section className="body-margin">
         <div className="feature-section">
           <div className="feature-grid home-reveal">
-            <img
-              src="/images/eg1.jpg"
-              alt="Portfolio photography"
-              className="grid-item"
-            />
-            <img
-              src="/images/eg2.jpg"
-              alt="Portfolio photography"
-              className="grid-item"
-            />
-            <img
-              src="/images/eg3.jpg"
-              alt="Portfolio photography"
-              className="grid-item"
-            />
-            <img
-              src="/images/eg4.jpg"
-              alt="Portfolio photography"
-              className="grid-item"
-            />
+            <SiteMediaContent mediaKey="portfolio.1" alt="Portfolio photography" className="grid-item" />
+            <SiteMediaContent mediaKey="portfolio.2" alt="Portfolio photography" className="grid-item" />
+            <SiteMediaContent mediaKey="portfolio.3" alt="Portfolio photography" className="grid-item" />
+            <SiteMediaContent mediaKey="portfolio.4" alt="Portfolio photography" className="grid-item" />
           </div>
           <div className="feature-whole home-reveal home-reveal--delay-100">
-            <img src="/images/eg5.jpg" alt="Portfolio photography" className="whole-item" />
+            <SiteMediaContent mediaKey="portfolio.5" alt="Portfolio photography" className="whole-item" />
           </div>
         </div>
       </section>
       <section className="body-margin">
         <div className="feature-section">
           <div className="feature-whole home-reveal">
-            <img src="/images/eg6.jpg" alt="Portfolio photography" className="whole-item" />
+            <SiteMediaContent mediaKey="portfolio.6" alt="Portfolio photography" className="whole-item" />
           </div>
           <div className="feature-grid home-reveal home-reveal--delay-100">
-            <img
-              src="/images/eg1.jpg"
-              alt="Portfolio photography"
-              className="grid-item"
-            />
-            <img
-              src="/images/eg2.jpg"
-              alt="Portfolio photography"
-              className="grid-item"
-            />
-            <img
-              src="/images/eg3.jpg"
-              alt="Portfolio photography"
-              className="grid-item"
-            />
-            <img
-              src="/images/eg4.jpg"
-              alt="Portfolio photography"
-              className="grid-item"
-            />
+            <SiteMediaContent mediaKey="portfolio.1" alt="Portfolio photography" className="grid-item" />
+            <SiteMediaContent mediaKey="portfolio.2" alt="Portfolio photography" className="grid-item" />
+            <SiteMediaContent mediaKey="portfolio.3" alt="Portfolio photography" className="grid-item" />
+            <SiteMediaContent mediaKey="portfolio.4" alt="Portfolio photography" className="grid-item" />
           </div>
         </div>
       </section>

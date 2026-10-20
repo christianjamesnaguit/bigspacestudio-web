@@ -1,0 +1,94 @@
+.staff-panel {
+	margin-top: 0;
+}
+
+.staff-list {
+	display: grid;
+	gap: 0.75rem;
+	margin-top: 1.25rem;
+}
+
+.staff-card {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 1rem;
+	padding: 1rem;
+	border: 1px solid #edf0eb;
+	border-radius: 8px;
+}
+
+.staff-avatar {
+	display: block;
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.staff-avatar-placeholder {
+	display: grid;
+	place-items: center;
+	background: #e8e8e8;
+	color: #454545;
+	font-weight: 700;
+}
+
+.staff-details {
+	display: grid;
+	min-width: 0;
+	gap: 0.15rem;
+}
+
+.staff-details strong {
+	color: #171717;
+}
+
+.staff-details a {
+	width: fit-content;
+	color: #555;
+	overflow-wrap: anywhere;
+}
+
+.staff-details span {
+	color: #777;
+	font-size: 0.82rem;
+}
+
+.staff-actions,
+.staff-edit-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.staff-actions .admin-button-link,
+.staff-actions button {
+	min-height: 36px;
+	padding: 0.45rem 0.7rem;
+	font-size: 0.85rem;
+}
+
+.staff-edit-form {
+	display: grid;
+	gap: 1.5rem;
+	max-width: 900px;
+}
+
+.staff-edit-actions {
+	padding-top: 0.5rem;
+	border-top: 1px solid #edf0eb;
+}
+
+@media (max-width: 600px) {
+	.staff-card {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.75rem;
+		padding: 0.8rem;
+	}
+
+	.staff-actions {
+		grid-column: 1 / -1;
+	}
+}

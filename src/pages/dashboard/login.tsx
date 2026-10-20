@@ -60,7 +60,7 @@ function Login({ modal = false, onClose }: LoginProps) {
 			if (remember) {
 				localStorage.setItem("remember-auth", "true");
 			}
-			navigate("/admin");
+			navigate(["Admin", "Staff"].includes(response.data.user.role) ? "/admin" : "/");
 		} catch (requestError) {
 			setError(getApiError(requestError, "Unable to log in. Check your details and try again."));
 		} finally {

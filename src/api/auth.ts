@@ -20,7 +20,7 @@ const csrfClient = axios.create({
     withXSRFToken: true,
 });
 
-async function prepareCsrf() {
+export async function prepareCsrf() {
     await csrfClient.get("/sanctum/csrf-cookie");
 }
 
@@ -68,7 +68,9 @@ export async function resetPassword(
 
 export function getApiError(error: unknown, fallback: string) {
     if (axios.isAxiosError<ApiError>(error)) {
-        return error.response?.data?.message ?? fallback;
+        const apiError = error.response?.data;
+        const validationMessage = apiError?.errors ? Object.values(apiError.errors).flat()[0] : undefined;
+        return validationMessage ?? apiError?.message ?? fallback;
     }
 
     return fallback;
