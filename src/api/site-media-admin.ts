@@ -1,6 +1,8 @@
 import api from "./axios";
 import type { SiteMediaRecord } from "./site-media-defaults";
 
+export type PortfolioMediaDetails = Pick<SiteMediaRecord, "category" | "shoot_type" | "client_name">;
+
 export async function getSiteMediaRecords() {
 	const response = await api.get<{ media: SiteMediaRecord[] }>("/site-media");
 	return response.data.media;
@@ -22,10 +24,30 @@ export async function createHomeGalleryImage(collection: "carousel" | "showcase"
 	});
 }
 
+export async function createPortfolioImage(file: File) {
+	const formData = new FormData();
+	formData.append("file", file);
+	return api.post("/dashboard/media/portfolio", formData, {
+		headers: { "Content-Type": "multipart/form-data" },
+	});
+}
+
 export async function deleteHomeGalleryImage(id: number) {
 	return api.delete(`/dashboard/media/home/${id}`);
 }
 
 export async function restoreSiteMedia(id: number) {
 	return api.delete(`/dashboard/media/${id}`);
+}
+
+export async function updatePortfolioMediaDetails(id: number, details: PortfolioMediaDetails) {
+	return api.patch(`/dashboard/media/${id}/portfolio-details`, details);
+}
+
+export async function setFeaturedPortfolioMedia(id: number) {
+	return api.patch(`/dashboard/media/${id}/portfolio-featured`);
+}
+
+export async function deletePortfolioMedia(id: number) {
+	return api.delete(`/dashboard/media/portfolio/${id}`);
 }

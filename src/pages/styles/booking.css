@@ -10,7 +10,7 @@
 
 .booking-eyebrow {
   margin: 0 0 10px;
-  color: #666;
+  color: var(--palette-muted);
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -24,7 +24,7 @@
 
 .booking-intro > p:last-child {
   max-width: 560px;
-  color: #555;
+  color: var(--palette-muted);
   font-size: 1.1rem;
   line-height: 1.6;
 }
@@ -38,7 +38,7 @@
 
 .booking-form,
 .booking-summary {
-  border: 1px solid #dedede;
+  border: 1px solid var(--palette-line);
   border-radius: 12px;
   background: #fff;
 }
@@ -51,7 +51,7 @@
 .booking-step + .booking-step {
   margin-top: 38px;
   padding-top: 38px;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid var(--palette-line);
 }
 
 .step-heading {
@@ -93,7 +93,7 @@
   align-items: center;
   gap: 14px;
   padding: 16px;
-  border: 1px solid #d8d8d8;
+  border: 1px solid var(--palette-line);
   border-radius: 8px;
   cursor: pointer;
 }
@@ -245,14 +245,14 @@
 }
 
 .booking-calendar-day.has-availability {
-  border-color: #d6ddd4;
-  background: #f0f3ef;
+  border-color: var(--palette-line);
+  background: var(--palette-beige);
   color: #222;
   font-weight: 700;
 }
 
 .booking-calendar-day.has-availability:hover:not(:disabled) {
-  border-color: #333;
+  border-color: var(--palette-accent);
 }
 
 .booking-calendar-day.selected {
@@ -265,9 +265,9 @@
   width: 100%;
   min-height: 42px;
   padding: 0.55rem 0.7rem;
-  border: 1px solid #d6ddd4;
+  border: 1px solid var(--palette-line);
   border-radius: 6px;
-  background: #f7f8f6;
+  background: var(--palette-beige-light);
   color: #222;
   cursor: pointer;
   font: inherit;
@@ -278,7 +278,7 @@
 .booking-slot:hover,
 .booking-slot.selected {
   border-color: #333;
-  background: #ededed;
+  background: var(--palette-beige);
 }
 
 .booking-slot.selected {
@@ -379,7 +379,7 @@
   position: sticky;
   top: 20px;
   padding: 28px;
-  background: #f7f7f7;
+  background: var(--palette-beige-light);
 }
 
 .booking-summary h2 {
@@ -391,7 +391,7 @@
   display: grid;
   gap: 5px;
   padding: 17px 0;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--palette-line);
 }
 
 .summary-item span,
@@ -407,7 +407,7 @@
 .booking-summary hr {
   margin: 28px 0;
   border: 0;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--palette-line);
 }
 
 .summary-next p {

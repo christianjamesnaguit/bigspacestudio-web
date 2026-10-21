@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import type { FormEvent } from "react";
 import Sidebar from "../../../components/dashboard/sidebar";
 import { getApiError } from "../../../api/auth";
-import { createHomeGalleryImage, deleteHomeGalleryImage, restoreSiteMedia, getSiteMediaRecords, uploadSiteMedia } from "../../../api/site-media-admin";
+import { createHomeGalleryImage, createPortfolioImage, deleteHomeGalleryImage, deletePortfolioMedia, restoreSiteMedia, getSiteMediaRecords, setFeaturedPortfolioMedia, updatePortfolioMediaDetails, uploadSiteMedia } from "../../../api/site-media-admin";
 import { useSiteMedia } from "../../../api/site-media-context";
 import type { SiteMediaRecord } from "../../../api/site-media-defaults";
 import SiteMediaCard from "./media-card";
@@ -15,6 +16,8 @@ function Media() {
 	const [selectedPage, setSelectedPage] = useState("home");
 	const [error, setError] = useState("");
 	const [message, setMessage] = useState("");
+	const [portfolioFile, setPortfolioFile] = useState<File | null>(null);
+	const [isAddingPortfolioImage, setIsAddingPortfolioImage] = useState(false);
 	const { refresh } = useSiteMedia();
 
 	const pages = useMemo(() => [
@@ -97,6 +100,46 @@ function Media() {
 		setError("");
 	}
 
+	async function persistPortfolioDetails(id: number, details: Pick<SiteMediaRecord, "category" | "shoot_type" | "client_name">) {
+		await updatePortfolioMediaDetails(id, details);
+		await reloadMedia();
+		setMessage("Portfolio details updated.");
+		setError("");
+	}
+
+	async function setFeaturedImage(id: number) {
+		await setFeaturedPortfolioMedia(id);
+		await reloadMedia();
+		setMessage("Featured portfolio image updated.");
+		setError("");
+	}
+
+	async function addPortfolioImage(event: FormEvent<HTMLFormElement>) {
+		event.preventDefault();
+		if (!portfolioFile) return;
+		const form = event.currentTarget;
+		setIsAddingPortfolioImage(true);
+		try {
+			await createPortfolioImage(portfolioFile);
+			await reloadMedia();
+			setPortfolioFile(null);
+			form.reset();
+			setMessage("Portfolio image added.");
+			setError("");
+		} catch (requestError) {
+			setError(getApiError(requestError, "Unable to add portfolio image."));
+		} finally {
+			setIsAddingPortfolioImage(false);
+		}
+	}
+
+	async function removePortfolioImage(id: number) {
+		await deletePortfolioMedia(id);
+		await reloadMedia();
+		setMessage("Portfolio image deleted.");
+		setError("");
+	}
+
 	async function removeHomeImage(id: number) {
 		await deleteHomeGalleryImage(id);
 		await reloadMedia();
@@ -120,7 +163,7 @@ function Media() {
 				{error && records.length === 0 ? null : (
 					<div className="media-editor">
 						<nav className="media-page-picker" aria-label="Choose a site page to edit">
-							{pages.filter((page) => page.records.length > 0).map((page) => (
+							{pages.map((page) => (
 								<button
 									type="button"
 									className={`media-page-option${selectedPage === page.id ? " selected" : ""}`}
@@ -163,12 +206,31 @@ function Media() {
 										/>
 									</>
 								)}
+								{currentPage.id === "portfolio" && (
+									<form className="portfolio-gallery-add" onSubmit={addPortfolioImage}>
+										<label>
+											Add portfolio image
+											<input
+												type="file"
+												accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+												disabled={isAddingPortfolioImage}
+												onChange={(event) => setPortfolioFile(event.target.files?.[0] ?? null)}
+											/>
+										</label>
+										<button type="submit" disabled={!portfolioFile || isAddingPortfolioImage}>
+											{isAddingPortfolioImage ? "Adding..." : "Add image"}
+										</button>
+									</form>
+								)}
 								<div className="media-grid">
 									{currentPage.records.filter((record) => currentPage.id !== "home" || (!record.media_key.startsWith("home.carousel.") && !record.media_key.startsWith("home.showcase."))).map((record) => (
 										<SiteMediaCard
 											key={record.id}
 											record={record}
 											onUpload={persistUpload}
+											onUpdatePortfolioDetails={persistPortfolioDetails}
+											onSetFeatured={setFeaturedImage}
+											onDeletePortfolioMedia={removePortfolioImage}
 											onRestore={restore}
 											onError={(requestError) => setError(getApiError(requestError, "Unable to update website media."))}
 										/>

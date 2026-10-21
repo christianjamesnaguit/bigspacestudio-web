@@ -19,11 +19,35 @@ export type SiteMediaRecord = {
 	url: string;
 	default_url: string;
 	alt_text: string;
+	category: string | null;
+	shoot_type: string | null;
+	client_name: string | null;
+	is_featured: boolean;
 	media_type: "image" | "video";
 	is_customized: boolean;
 };
 
-export const defaultSiteMedia: Record<string, { url: string; alt_text: string }> = {
+export const portfolioCategories = [
+	"Graduation",
+	"Birthday",
+	"Solo Creative",
+	"Duo/Couple (portrait)",
+	"Prenup (portrait)",
+	"K-Profile",
+	"Family",
+	"Corporate",
+	"Barkada",
+] as const;
+
+export type DefaultSiteMedia = {
+	url: string;
+	alt_text: string;
+	category?: string | null;
+	shoot_type?: string | null;
+	client_name?: string | null;
+};
+
+export const defaultSiteMedia: Record<string, DefaultSiteMedia> = {
 	"home.carousel.1": { url: "/images/photo1.jpg", alt_text: "Studio portfolio image 1" },
 	"home.carousel.2": { url: "/images/photo2.jpg", alt_text: "Studio portfolio image 2" },
 	"home.carousel.3": { url: "/images/photo3.jpg", alt_text: "Studio portfolio image 3" },
@@ -39,12 +63,12 @@ export const defaultSiteMedia: Record<string, { url: string; alt_text: string }>
 	"home.quality.beauty": { url: beautyIcon, alt_text: "Beautiful results" },
 	"home.about": { url: "/images/what.jpg", alt_text: "About Us" },
 	"home.milestones": { url: "/images/who.jpg", alt_text: "Big Space Studio milestones" },
-	"portfolio.1": { url: "/images/eg1.jpg", alt_text: "Portfolio photography" },
-	"portfolio.2": { url: "/images/eg2.jpg", alt_text: "Portfolio photography" },
-	"portfolio.3": { url: "/images/eg3.jpg", alt_text: "Portfolio photography" },
-	"portfolio.4": { url: "/images/eg4.jpg", alt_text: "Portfolio photography" },
-	"portfolio.5": { url: "/images/eg5.jpg", alt_text: "Portfolio photography" },
-	"portfolio.6": { url: "/images/eg6.jpg", alt_text: "Portfolio photography" },
+	"portfolio.1": { url: "/images/eg1.jpg", alt_text: "Graduation portrait", category: "Graduation", shoot_type: "Graduation portrait" },
+	"portfolio.2": { url: "/images/eg2.jpg", alt_text: "Creative studio portrait", category: "Solo Creative", shoot_type: "Creative studio portrait" },
+	"portfolio.3": { url: "/images/eg3.jpg", alt_text: "Graduation portrait", category: "Graduation", shoot_type: "Graduation portrait" },
+	"portfolio.4": { url: "/images/eg4.jpg", alt_text: "Studio portrait", category: "Solo Creative", shoot_type: "Studio portrait" },
+	"portfolio.5": { url: "/images/eg5.jpg", alt_text: "Graduation portrait", category: "Graduation", shoot_type: "Graduation portrait" },
+	"portfolio.6": { url: "/images/eg6.jpg", alt_text: "Studio portrait", category: "Solo Creative", shoot_type: "Studio portrait" },
 	"faq.image": { url: "/images/photo3.jpg", alt_text: "Big Space Studio" },
 	"contact.background": { url: "/images/where.jpg", alt_text: "" },
 	"brand.logo": { url: logoImage, alt_text: "Big Space Studio" },

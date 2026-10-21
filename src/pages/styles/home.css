@@ -21,7 +21,7 @@
   left: 50%;
   width: 100vw;
   transform: translateX(-50%);
-  background-color: #f5f5f5;
+  background-color: var(--palette-beige-light);
   background-image:
     radial-gradient(
       circle at 50% 40%,
@@ -130,6 +130,7 @@
 .why-content > img,
 .why-content > video {
   display: block;
+  margin-inline: auto;
   width: 64px;
   height: 64px;
   object-fit: contain;

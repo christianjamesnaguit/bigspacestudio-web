@@ -14,7 +14,7 @@
 	align-items: center;
 	gap: 1rem;
 	padding: 1rem;
-	border: 1px solid #edf0eb;
+	border: 1px solid var(--palette-line);
 	border-radius: 8px;
 }
 
@@ -29,8 +29,8 @@
 .staff-avatar-placeholder {
 	display: grid;
 	place-items: center;
-	background: #e8e8e8;
-	color: #454545;
+	background: var(--palette-beige);
+	color: var(--palette-ink);
 	font-weight: 700;
 }
 
@@ -78,7 +78,7 @@
 
 .staff-edit-actions {
 	padding-top: 0.5rem;
-	border-top: 1px solid #edf0eb;
+	border-top: 1px solid var(--palette-line);
 }
 
 @media (max-width: 600px) {

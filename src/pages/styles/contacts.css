@@ -209,7 +209,7 @@
   width: min(100%, 800px);
   height: auto;
   aspect-ratio: 4 / 3;
-  background-color: #f5f5f5;
+  background-color: var(--palette-beige-light);
   padding: 0.5em;
   border-radius: 10px;
 }
@@ -255,7 +255,7 @@
   box-sizing: border-box;
   width: 100%;
   padding: 0.75em;
-  border: 1px solid #bdbdbd;
+  border: 1px solid var(--palette-line);
   border-radius: 4px;
   font: inherit;
 }

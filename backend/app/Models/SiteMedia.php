@@ -11,7 +11,15 @@ class SiteMedia extends Model
         'label',
         'default_url',
         'alt_text',
+        'category',
+        'shoot_type',
+        'client_name',
+        'is_featured',
         'file_path',
         'media_type',
+    ];
+
+    protected $casts = [
+        'is_featured' => 'boolean',
     ];
 }

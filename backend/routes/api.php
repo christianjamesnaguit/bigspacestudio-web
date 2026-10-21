@@ -53,8 +53,12 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::put('/staff/{staff}', [StaffController::class, 'update']);
             Route::post('/staff/{staff}', [StaffController::class, 'update']);
             Route::delete('/staff/{staff}', [StaffController::class, 'destroy']);
+            Route::post('/media/portfolio', [SiteMediaController::class, 'storePortfolioImage']);
             Route::put('/media/{media}', [SiteMediaController::class, 'update']);
             Route::post('/media/{media}', [SiteMediaController::class, 'update']);
+            Route::patch('/media/{media}/portfolio-details', [SiteMediaController::class, 'updatePortfolioDetails']);
+            Route::patch('/media/{media}/portfolio-featured', [SiteMediaController::class, 'setFeaturedPortfolioImage']);
+            Route::delete('/media/portfolio/{media}', [SiteMediaController::class, 'destroyPortfolioImage']);
             Route::post('/media/home/{collection}', [SiteMediaController::class, 'storeHomeImage']);
             Route::delete('/media/home/{media}', [SiteMediaController::class, 'destroyHomeImage']);
             Route::delete('/media/{media}', [SiteMediaController::class, 'restore']);

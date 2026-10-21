@@ -9,6 +9,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Throwable;
 
 class SiteMediaController extends Controller
@@ -41,6 +42,94 @@ class SiteMediaController extends Controller
         }
 
         return response()->json(['media' => $this->mediaData($media)]);
+    }
+
+    public function updatePortfolioDetails(Request $request, SiteMedia $media): JsonResponse
+    {
+        abort_unless(str_starts_with($media->media_key, 'portfolio.'), 404);
+
+        $validated = $request->validate([
+            'category' => ['nullable', 'string', Rule::in([
+                'Graduation',
+                'Birthday',
+                'Solo Creative',
+                'Duo/Couple (portrait)',
+                'Prenup (portrait)',
+                'K-Profile',
+                'Family',
+                'Corporate',
+                'Barkada',
+            ])],
+            'shoot_type' => ['nullable', 'string', 'max:120'],
+            'client_name' => ['nullable', 'string', 'max:180'],
+        ]);
+
+        $media->fill($validated);
+        $media->save();
+
+        return response()->json(['media' => $this->mediaData($media)]);
+    }
+
+    public function setFeaturedPortfolioImage(SiteMedia $media): JsonResponse
+    {
+        abort_unless(str_starts_with($media->media_key, 'portfolio.'), 404);
+
+        DB::transaction(function () use ($media): void {
+            SiteMedia::query()
+                ->where('media_key', 'like', 'portfolio.%')
+                ->update(['is_featured' => false]);
+
+            $media->is_featured = true;
+            $media->save();
+        });
+
+        return response()->json(['media' => $this->mediaData($media)]);
+    }
+
+    public function destroyPortfolioImage(SiteMedia $media): JsonResponse
+    {
+        abort_unless(str_starts_with($media->media_key, 'portfolio.'), 404);
+
+        $filePath = $media->file_path;
+        $media->delete();
+
+        if ($filePath) {
+            $this->deleteMediaFile($filePath);
+        }
+
+        return response()->json(['message' => 'Portfolio image deleted.']);
+    }
+
+    public function storePortfolioImage(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'file' => ['required', 'file', 'mimetypes:image/jpeg,image/png,image/webp,image/gif,image/avif', 'max:102400'],
+        ]);
+
+        $nextIndex = ((int) SiteMedia::query()
+            ->where('media_key', 'like', 'portfolio.%')
+            ->pluck('media_key')
+            ->map(fn (string $key): int => ctype_digit(substr($key, strlen('portfolio.'))) ? (int) substr($key, strlen('portfolio.')) : 0)
+            ->max()) + 1;
+        $mediaKey = "portfolio.{$nextIndex}";
+        $filePath = $this->storeMediaUpload($validated['file'], $mediaKey);
+        abort_if($filePath === false, 500, 'Unable to save portfolio image.');
+
+        try {
+            $media = DB::transaction(fn (): SiteMedia => SiteMedia::query()->create([
+                'media_key' => $mediaKey,
+                'label' => "Portfolio image {$nextIndex}",
+                'default_url' => '',
+                'alt_text' => 'Portfolio image',
+                'file_path' => $filePath,
+                'media_type' => 'image',
+            ]));
+        } catch (Throwable $exception) {
+            $this->deleteMediaFile($filePath);
+            throw $exception;
+        }
+
+        return response()->json(['media' => $this->mediaData($media)], 201);
     }
 
     public function restore(SiteMedia $media): JsonResponse
@@ -136,6 +225,10 @@ class SiteMediaController extends Controller
                 : $media->default_url,
             'default_url' => $media->default_url,
             'alt_text' => $media->alt_text,
+            'category' => $media->category,
+            'shoot_type' => $media->shoot_type,
+            'client_name' => $media->client_name,
+            'is_featured' => $media->is_featured,
             'media_type' => $media->media_type,
             'is_customized' => $media->file_path !== null,
         ];

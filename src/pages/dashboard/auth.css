@@ -5,8 +5,8 @@
 	align-items: center;
 	justify-content: center;
 	padding: 2rem 1rem;
-	background: #f5f5f3;
-	color: #171717;
+	background: var(--palette-paper);
+	color: var(--palette-ink);
 }
 
 .auth-modal {
@@ -95,7 +95,7 @@
 	width: min(100%, 430px);
 	box-sizing: border-box;
 	padding: clamp(1.25rem, 5vw, 2.5rem);
-	border: 1px solid #deded9;
+	border: 1px solid var(--palette-line);
 	border-radius: 10px;
 	background: #ffffff;
 	box-shadow: 0 18px 50px rgb(23 23 23 / 8%);
@@ -183,7 +183,7 @@
 	width: 100%;
 	margin-bottom: 0.7rem;
 	padding: 0.8rem;
-	border: 1px solid #cfcfca;
+	border: 1px solid var(--palette-line);
 	border-radius: 3px;
 	background: #ffffff;
 	color: #171717;
@@ -191,8 +191,8 @@
 }
 
 .auth-form input:focus {
-	border-color: #171717;
-	outline: 2px solid #d4d4ce;
+	border-color: var(--palette-ink);
+	outline: 2px solid var(--palette-beige);
 	outline-offset: 1px;
 }
 

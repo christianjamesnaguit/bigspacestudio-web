@@ -11,9 +11,9 @@
 .admin-booking-form,
 .admin-booking-summary {
 	min-width: 0;
-	border-color: #e2e6de;
+	border-color: var(--palette-line);
 	border-radius: 10px;
-	box-shadow: 0 2px 8px rgb(23 27 24 / 3%);
+	box-shadow: 0 2px 8px rgb(23 22 20 / 4%);
 }
 
 .admin-booking-form {
@@ -23,7 +23,7 @@
 .admin-booking-form .booking-step + .booking-step {
 	margin-top: 1.75rem;
 	padding-top: 1.75rem;
-	border-color: #edf0eb;
+	border-color: var(--palette-line);
 }
 
 .admin-booking-form .step-heading > span {
@@ -32,12 +32,12 @@
 
 .admin-booking-form .service-option {
 	min-width: 0;
-	border-color: #dfe5dc;
+	border-color: var(--palette-line);
 }
 
 .admin-booking-form .service-option.selected {
-	border-color: #555;
-	box-shadow: 0 0 0 1px #555;
+	border-color: var(--palette-accent);
+	box-shadow: 0 0 0 1px var(--palette-accent);
 }
 
 .admin-booking-form .service-option input {
@@ -54,7 +54,7 @@
 }
 
 .admin-booking-form .service-price {
-	color: #343434;
+	color: var(--palette-ink);
 }
 
 .admin-booking-calendar {
@@ -67,25 +67,25 @@
 .admin-booking-form .simple-calendar {
 	max-width: none;
 	padding: 0.85rem;
-	border-color: #dfe5dc;
+	border-color: var(--palette-line);
 }
 
 .admin-booking-form .calendar-heading button {
 	width: 36px;
 	height: 36px;
 	padding: 0;
-	border: 1px solid #d8d8d8;
-	background: #f2f2f2;
-	color: #383838;
+	border: 1px solid var(--palette-line);
+	background: var(--palette-beige-light);
+	color: var(--palette-ink);
 	line-height: 1;
 }
 
 .admin-booking-form .calendar-heading button:hover:not(:disabled) {
-	background: #ededed;
+	background: var(--palette-beige);
 }
 
 .admin-booking-form .booking-calendar-weekdays {
-	color: #788178;
+	color: var(--palette-muted);
 }
 
 .admin-booking-form .booking-calendar-day {
@@ -93,14 +93,14 @@
 }
 
 .admin-booking-form .booking-calendar-day.has-availability {
-	border-color: #dfe5dc;
-	background: #f0f0f0;
+	border-color: var(--palette-line);
+	background: var(--palette-beige);
 	color: #303030;
 	font-weight: 700;
 }
 
 .admin-booking-form .booking-calendar-day.has-availability:hover:not(:disabled) {
-	border-color: #555;
+	border-color: var(--palette-accent);
 }
 
 .admin-booking-form .booking-calendar-day.selected {
@@ -112,7 +112,7 @@
 .admin-booking-form .booking-calendar-day:disabled {
 	border-color: transparent;
 	background: transparent;
-	color: #c4c9c3;
+	color: #b8b0a4;
 }
 
 .admin-booking-times {
@@ -130,26 +130,26 @@
 .admin-body .admin-booking-time {
 	width: 100%;
 	padding: 0.6rem 0.5rem;
-	border: 1px solid #d8d8d8;
+	border: 1px solid var(--palette-line);
 	background: #fff;
-	color: #383838;
+	color: var(--palette-ink);
 	font-size: 0.82rem;
 }
 
 .admin-body .admin-booking-time:hover,
 .admin-body .admin-booking-time.selected {
-	border-color: #555;
-	background: #f0f0f0;
+	border-color: var(--palette-accent);
+	background: var(--palette-beige);
 	color: #303030;
 }
 
 .admin-body .admin-booking-time.selected {
-	box-shadow: inset 0 0 0 1px #555;
+	box-shadow: inset 0 0 0 1px var(--palette-accent);
 }
 
 .admin-booking-empty {
 	margin: 0;
-	color: #788178;
+	color: var(--palette-muted);
 	font-size: 0.85rem;
 	line-height: 1.5;
 }
@@ -159,13 +159,13 @@
 }
 
 .admin-booking-form .booking-field label span {
-	color: #788178;
+	color: var(--palette-muted);
 }
 
 .admin-booking-form .booking-field input,
 .admin-booking-form .booking-field select,
 .admin-booking-form .booking-field textarea {
-	border-color: #cbd2c9;
+	border-color: var(--palette-line);
 	border-radius: 6px;
 }
 
@@ -181,19 +181,19 @@
 .admin-body .admin-booking-cancel {
 	width: 100%;
 	margin-top: 0.65rem;
-	border: 1px solid #d4d4d4;
+	border: 1px solid var(--palette-line);
 	background: #fff;
 	color: #303030;
 }
 
 .admin-body .admin-booking-cancel:hover {
-	background: #f1f1f1;
+	background: var(--palette-beige-light);
 }
 
 .admin-booking-summary {
 	top: 1rem;
 	padding: 1.4rem;
-	background: #f7f8f5;
+	background: var(--palette-beige-light);
 }
 
 .admin-booking-summary h2 {
@@ -202,16 +202,16 @@
 }
 
 .admin-booking-summary .booking-eyebrow {
-	color: #778078;
+	color: var(--palette-muted);
 }
 
 .admin-booking-summary .summary-item {
 	padding: 0.85rem 0;
-	border-color: #e2e6de;
+	border-color: var(--palette-line);
 }
 
 .admin-booking-summary .summary-item span {
-	color: #687069;
+	color: var(--palette-muted);
 }
 
 .admin-booking-summary .summary-item strong {
@@ -221,7 +221,7 @@
 
 .admin-booking-summary hr {
 	margin: 1rem 0;
-	border-color: #e2e6de;
+	border-color: var(--palette-line);
 }
 
 .admin-booking-summary .admin-booking-total strong {
@@ -239,7 +239,7 @@
 }
 
 .table-toolbar span {
-	color: #687069;
+	color: var(--palette-muted);
 	font-size: 0.9rem;
 }
 
@@ -257,8 +257,8 @@
 	gap: 1rem;
 	min-width: 860px;
 	padding: 1rem 0;
-	border-top: 1px solid #edf0eb;
-	color: #5e675f;
+	border-top: 1px solid var(--palette-line);
+	color: var(--palette-muted);
 	font-size: 0.9rem;
 }
 
@@ -301,7 +301,7 @@
 .booking-table .booking-decision-reason {
 	display: block;
 	overflow-wrap: anywhere;
-	color: #687069;
+	color: var(--palette-muted);
 	font-size: 0.82rem;
 	line-height: 1.45;
 }
@@ -339,7 +339,7 @@
 	gap: 0.8rem;
 	width: min(100%, 460px);
 	padding: clamp(1.25rem, 4vw, 2rem);
-	border: 1px solid #e2e6de;
+	border: 1px solid var(--palette-line);
 	border-radius: 10px;
 	background: #fff;
 	box-shadow: 0 18px 60px rgb(0 0 0 / 20%);
@@ -347,7 +347,7 @@
 
 .booking-decision-modal .booking-eyebrow {
 	margin: 0;
-	color: #778078;
+	color: var(--palette-muted);
 	font-size: 0.75rem;
 	font-weight: 700;
 	letter-spacing: 0.08em;
@@ -359,12 +359,12 @@
 }
 
 .booking-decision-modal h2 {
-	color: #171717;
+	color: var(--palette-ink);
 	font-size: 1.35rem;
 }
 
 .booking-decision-modal > p:not(.booking-eyebrow) {
-	color: #687069;
+	color: var(--palette-muted);
 	line-height: 1.5;
 }
 
@@ -379,7 +379,7 @@
 	width: 100%;
 	min-height: 110px;
 	padding: 0.75rem;
-	border: 1px solid #cbd2c9;
+	border: 1px solid var(--palette-line);
 	border-radius: 6px;
 	font: inherit;
 	resize: vertical;
@@ -398,13 +398,13 @@
 }
 
 .table-row strong {
-	color: #171717;
+	color: var(--palette-ink);
 }
 
 .table-header {
 	padding: 0.5rem 0 0.75rem;
 	border-top: 0;
-	color: #788178;
+	color: var(--palette-muted);
 	font-size: 0.75rem;
 	font-weight: 700;
 	text-transform: uppercase;

@@ -2,8 +2,8 @@
   display: flex;
   min-height: 100vh;
   flex-direction: column;
-  background: white;
-  color: #171717;
+  background: var(--palette-paper);
+  color: var(--palette-ink);
 }
 
 .error-content {
@@ -19,7 +19,7 @@
 
 .error-code {
   margin-bottom: -1rem;
-  color: #deded9;
+  color: var(--palette-beige);
   font-size: clamp(8rem, 24vw, 18rem);
   font-weight: 900;
   letter-spacing: -0.08em;
@@ -56,7 +56,7 @@
 }
 
 .error-secondary-link {
-  color: #171717;
+  color: var(--palette-ink);
   font-weight: 700;
   text-decoration: none;
 }

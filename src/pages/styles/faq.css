@@ -40,7 +40,7 @@
   width: 100%;
   max-width: 360px;
   padding: 0.75em;
-  border: 1px solid #bdbdbd;
+  border: 1px solid var(--palette-line);
   border-radius: 4px;
   background-color: #fff;
   font: inherit;

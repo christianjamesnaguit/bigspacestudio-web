@@ -1,3 +1,14 @@
+:root {
+  --palette-ink: #171614;
+  --palette-paper: #ffffff;
+  --palette-white: #ffffff;
+  --palette-beige: #f7f5f0;
+  --palette-beige-light: #f7f5f0;
+  --palette-line: #ded8cd;
+  --palette-muted: #756e63;
+  --palette-accent: #786d5d;
+}
+
 *,
 *::before,
 *::after {
@@ -11,6 +22,8 @@ html {
 body {
   margin: 0;
   overflow-x: hidden;
+  background-color: var(--palette-paper);
+  color: var(--palette-ink);
   font-family: Helvetica, Arial, sans-serif;
   line-height: 1.5;
 }

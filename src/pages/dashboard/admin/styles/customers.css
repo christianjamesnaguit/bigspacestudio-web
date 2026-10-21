@@ -10,7 +10,7 @@
 }
 
 .table-toolbar span {
-	color: #687069;
+	color: var(--palette-muted);
 	font-size: 0.9rem;
 }
 
@@ -28,8 +28,8 @@
 	gap: 1rem;
 	min-width: 860px;
 	padding: 1rem 0;
-	border-top: 1px solid #edf0eb;
-	color: #5e675f;
+	border-top: 1px solid var(--palette-line);
+	color: var(--palette-muted);
 	font-size: 0.9rem;
 }
 
@@ -49,13 +49,13 @@
 }
 
 .table-row small {
-	color: #788178;
+	color: var(--palette-muted);
 }
 
 .table-header {
 	padding: 0.5rem 0 0.75rem;
 	border-top: 0;
-	color: #788178;
+	color: var(--palette-muted);
 	font-size: 0.75rem;
 	font-weight: 700;
 	text-transform: uppercase;

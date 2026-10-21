@@ -47,6 +47,10 @@ class StaffAndSiteMediaTest extends TestCase
             ->postJson('/api/dashboard/media/home/carousel', ['file' => $this->pngUpload('unauthorized.png')])
             ->assertForbidden();
 
+        $this->actingAs($customer)
+            ->postJson('/api/dashboard/media/portfolio', ['file' => $this->pngUpload('unauthorized-portfolio.png')])
+            ->assertForbidden();
+
         $this->getJson('/api/site-media')
             ->assertOk()
             ->assertJsonStructure(['media' => [['media_key', 'url', 'media_type', 'is_customized']]]);
@@ -125,6 +129,147 @@ class StaffAndSiteMediaTest extends TestCase
 
         $this->assertFileDoesNotExist("{$galleryPath}/photo1-customized.png");
         File::deleteDirectory($galleryPath);
+    }
+
+    public function test_admin_can_update_portfolio_image_metadata(): void
+    {
+        $this->actingAs(User::factory()->create(['role' => 'Admin']));
+        $media = SiteMedia::query()->where('media_key', 'portfolio.1')->firstOrFail();
+
+        $this->patchJson("/api/dashboard/media/{$media->id}/portfolio-details", [
+            'category' => 'Graduation',
+            'shoot_type' => 'Studio portrait',
+            'client_name' => 'Class of 2026',
+        ])->assertOk()
+            ->assertJsonPath('media.category', 'Graduation')
+            ->assertJsonPath('media.shoot_type', 'Studio portrait')
+            ->assertJsonPath('media.client_name', 'Class of 2026');
+
+        $this->assertDatabaseHas('site_media', [
+            'id' => $media->id,
+            'category' => 'Graduation',
+            'shoot_type' => 'Studio portrait',
+            'client_name' => 'Class of 2026',
+        ]);
+    }
+
+    public function test_admin_can_set_a_single_featured_portfolio_image(): void
+    {
+        $this->actingAs(User::factory()->create(['role' => 'Admin']));
+        $previousFeatured = SiteMedia::query()->where('media_key', 'portfolio.1')->firstOrFail();
+        $selectedMedia = SiteMedia::query()->where('media_key', 'portfolio.2')->firstOrFail();
+
+        $this->patchJson("/api/dashboard/media/{$selectedMedia->id}/portfolio-featured")
+            ->assertOk()
+            ->assertJsonPath('media.is_featured', true);
+
+        $this->assertDatabaseHas('site_media', [
+            'id' => $selectedMedia->id,
+            'is_featured' => true,
+        ]);
+        $this->assertDatabaseHas('site_media', [
+            'id' => $previousFeatured->id,
+            'is_featured' => false,
+        ]);
+    }
+
+    public function test_non_admin_cannot_change_the_featured_portfolio_image(): void
+    {
+        $this->actingAs(User::factory()->create(['role' => 'Customer']));
+        $media = SiteMedia::query()->where('media_key', 'portfolio.2')->firstOrFail();
+
+        $this->patchJson("/api/dashboard/media/{$media->id}/portfolio-featured")
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('site_media', [
+            'media_key' => 'portfolio.1',
+            'is_featured' => true,
+        ]);
+    }
+
+    public function test_admin_can_remove_portfolio_image_from_public_gallery(): void
+    {
+        Storage::fake('public');
+        $filePath = 'site-media/portfolio-to-delete.png';
+        Storage::disk('public')->put($filePath, 'portfolio image');
+        $media = SiteMedia::query()->where('media_key', 'portfolio.1')->firstOrFail();
+        $media->file_path = $filePath;
+        $media->save();
+        $this->actingAs(User::factory()->create(['role' => 'Admin']));
+
+        $this->deleteJson("/api/dashboard/media/portfolio/{$media->id}")
+            ->assertOk()
+            ->assertJsonPath('message', 'Portfolio image deleted.');
+
+        $this->assertDatabaseMissing('site_media', ['id' => $media->id]);
+        Storage::disk('public')->assertMissing($filePath);
+    }
+
+    public function test_admin_can_add_portfolio_image(): void
+    {
+        Storage::fake('public');
+        $this->actingAs(User::factory()->create(['role' => 'Admin']));
+
+        $created = $this->postJson('/api/dashboard/media/portfolio', [
+            'file' => $this->pngUpload('portfolio.png'),
+        ])->assertCreated()
+            ->assertJsonPath('media.media_key', 'portfolio.7')
+            ->assertJsonPath('media.is_customized', true)
+            ->assertJsonPath('media.media_type', 'image');
+
+        $media = SiteMedia::query()->where('media_key', 'portfolio.7')->firstOrFail();
+        $this->assertSame('Portfolio image 7', $media->label);
+        $this->assertNotEmpty($media->file_path);
+        Storage::disk('public')->assertExists($media->file_path);
+    }
+
+    public function test_non_admin_cannot_delete_portfolio_image(): void
+    {
+        $media = SiteMedia::query()->where('media_key', 'portfolio.1')->firstOrFail();
+        $this->actingAs(User::factory()->create(['role' => 'Customer']));
+
+        $this->deleteJson("/api/dashboard/media/portfolio/{$media->id}")
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('site_media', [
+            'id' => $media->id,
+        ]);
+    }
+
+    public function test_portfolio_metadata_update_rejects_unknown_categories_without_changing_the_record(): void
+    {
+        $this->actingAs(User::factory()->create(['role' => 'Admin']));
+        $media = SiteMedia::query()->where('media_key', 'portfolio.1')->firstOrFail();
+
+        $this->patchJson("/api/dashboard/media/{$media->id}/portfolio-details", [
+            'category' => 'Wedding',
+            'shoot_type' => 'Studio portrait',
+            'client_name' => 'Class of 2026',
+        ])->assertInvalid(['category' => 'The selected category is invalid.']);
+
+        $this->assertDatabaseHas('site_media', [
+            'id' => $media->id,
+            'category' => 'Graduation',
+            'shoot_type' => 'Graduation portrait',
+            'client_name' => null,
+        ]);
+    }
+
+    public function test_non_admin_cannot_update_portfolio_image_metadata(): void
+    {
+        $media = SiteMedia::query()->where('media_key', 'portfolio.1')->firstOrFail();
+        $this->actingAs(User::factory()->create(['role' => 'Customer']));
+
+        $this->patchJson("/api/dashboard/media/{$media->id}/portfolio-details", [
+            'category' => 'Birthday',
+            'shoot_type' => 'Party portrait',
+            'client_name' => 'Birthday session',
+        ])->assertForbidden();
+
+        $this->assertDatabaseHas('site_media', [
+            'id' => $media->id,
+            'category' => 'Graduation',
+        ]);
     }
 
     public function test_admin_can_add_replace_and_remove_home_gallery_images(): void

@@ -28,7 +28,7 @@
 	justify-content: space-between;
 	gap: 1.5rem;
 	padding-bottom: 1rem;
-	border-bottom: 1px solid #e9ece7;
+	border-bottom: 1px solid var(--palette-line);
 }
 
 .settings-panel-heading .eyebrow {
@@ -37,7 +37,7 @@
 
 .settings-panel-heading h2 {
 	margin: 0;
-	color: #202320;
+	color: var(--palette-ink);
 	font-size: 1.15rem;
 	letter-spacing: -0.02em;
 }
@@ -45,7 +45,7 @@
 .settings-panel-heading > p {
 	max-width: 260px;
 	margin: 0.35rem 0 0;
-	color: #687069;
+	color: var(--palette-muted);
 	font-size: 0.85rem;
 	line-height: 1.5;
 	text-align: right;
@@ -74,7 +74,7 @@
 	min-width: 0;
 	min-height: 44px;
 	padding: 0.65rem 0.75rem;
-	border: 1px solid #cbd2c9;
+	border: 1px solid var(--palette-line);
 	border-radius: 7px;
 	background: #fff;
 	color: #171717;
@@ -85,8 +85,8 @@
 
 .settings-fields input:not([type="checkbox"]):focus,
 .settings-fields select:focus {
-	border-color: #747d75;
-	box-shadow: 0 0 0 3px rgb(116 125 117 / 12%);
+	border-color: var(--palette-accent);
+	box-shadow: 0 0 0 3px rgb(120 109 93 / 14%);
 	outline: none;
 }
 
@@ -123,7 +123,7 @@
 }
 
 .settings-checkbox small {
-	color: #687069;
+	color: var(--palette-muted);
 	font-size: 0.8rem;
 	font-weight: 400;
 	line-height: 1.45;
@@ -164,7 +164,7 @@
 }
 
 .settings-save-hint {
-	color: #687069;
+	color: var(--palette-muted);
 	font-size: 0.82rem;
 }
 
