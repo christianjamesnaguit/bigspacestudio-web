@@ -9,11 +9,10 @@ type Props = {
 	onUpload: (id: number, file: File) => Promise<void>;
 	onSetFeatured: (id: number) => Promise<void>;
 	onDeletePortfolioMedia: (id: number) => Promise<void>;
-	onRestore: (id: number) => Promise<void>;
 	onError: (error: unknown) => void;
 };
 
-function SiteMediaCard({ record, isSelected, onSelect, onUpload, onSetFeatured, onDeletePortfolioMedia, onRestore, onError }: Props) {
+function SiteMediaCard({ record, isSelected, onSelect, onUpload, onSetFeatured, onDeletePortfolioMedia, onError }: Props) {
 	const [file, setFile] = useState<File | null>(null);
 	const [previewUrl, setPreviewUrl] = useState("");
 	const [isSaving, setIsSaving] = useState(false);
@@ -42,18 +41,6 @@ function SiteMediaCard({ record, isSelected, onSelect, onUpload, onSetFeatured, 
 			setFile(null);
 			setPreviewUrl("");
 			form.reset();
-		} catch (error) {
-			onError(error);
-		} finally {
-			setIsSaving(false);
-		}
-	}
-
-	async function handleRestore() {
-		if (!window.confirm(`Restore the original media for "${record.label}"?`)) return;
-		setIsSaving(true);
-		try {
-			await onRestore(record.id);
 		} catch (error) {
 			onError(error);
 		} finally {
@@ -130,9 +117,6 @@ function SiteMediaCard({ record, isSelected, onSelect, onUpload, onSetFeatured, 
 				</label>
 				<div className="media-card-buttons">
 					<button type="submit" disabled={!file || isSaving}>{isSaving ? "Saving..." : "Upload"}</button>
-					{record.is_customized && (
-						<button type="button" className="crud-secondary" disabled={isSaving} onClick={handleRestore}>Restore original</button>
-					)}
 				</div>
 			</form>
 		</article>

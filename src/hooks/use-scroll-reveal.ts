@@ -7,9 +7,15 @@ export function useScrollReveal<T extends HTMLElement>(
     const container = containerRef.current;
     if (!container) return;
 
-    const elements = container.querySelectorAll(".home-reveal, .portfolio-reveal");
+    const revealElements = (root: ParentNode) => {
+      if (root instanceof Element && root.matches(".home-reveal, .portfolio-reveal")) {
+        observer.observe(root);
+      }
+      root.querySelectorAll(".home-reveal, .portfolio-reveal").forEach((element) => observer.observe(element));
+    };
+
     if (!("IntersectionObserver" in window)) {
-      elements.forEach((element) => element.classList.add("is-visible"));
+      container.querySelectorAll(".home-reveal, .portfolio-reveal").forEach((element) => element.classList.add("is-visible"));
       return;
     }
 
@@ -25,8 +31,19 @@ export function useScrollReveal<T extends HTMLElement>(
       { threshold: 0.15 },
     );
 
-    elements.forEach((element) => observer.observe(element));
+    revealElements(container);
+    const mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node instanceof Element) revealElements(node);
+        });
+      });
+    });
+    mutationObserver.observe(container, { childList: true, subtree: true });
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+    };
   }, [containerRef]);
 }

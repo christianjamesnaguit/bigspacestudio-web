@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import Sidebar from "../../../components/dashboard/sidebar";
 import { getApiError } from "../../../api/auth";
-import { bulkUpdatePortfolioMediaDetails, createHomeGalleryImage, createPortfolioImage, deleteHomeGalleryImage, deletePortfolioMedia, restoreSiteMedia, getSiteMediaRecords, setFeaturedPortfolioMedia, uploadSiteMedia } from "../../../api/site-media-admin";
+import { bulkUpdatePortfolioMediaDetails, createHomeGalleryImage, createPortfolioImage, deleteHomeGalleryImage, deletePortfolioMedia, getSiteMediaRecords, setFeaturedPortfolioMedia, uploadSiteMedia } from "../../../api/site-media-admin";
 import type { PortfolioMediaDetails } from "../../../api/site-media-admin";
 import { useSiteMedia } from "../../../api/site-media-context";
 import { portfolioCategories, type SiteMediaRecord } from "../../../api/site-media-defaults";
@@ -17,7 +17,7 @@ function Media() {
 	const [selectedPage, setSelectedPage] = useState("home");
 	const [error, setError] = useState("");
 	const [message, setMessage] = useState("");
-	const [portfolioFile, setPortfolioFile] = useState<File | null>(null);
+	const [portfolioFiles, setPortfolioFiles] = useState<File[]>([]);
 	const [isAddingPortfolioImage, setIsAddingPortfolioImage] = useState(false);
 	const [selectedPortfolioIds, setSelectedPortfolioIds] = useState<number[]>([]);
 	const [includedPortfolioCategories, setIncludedPortfolioCategories] = useState<string[]>([]);
@@ -103,13 +103,6 @@ function Media() {
 		setError("");
 	}
 
-	async function restore(id: number) {
-		await restoreSiteMedia(id);
-		await reloadMedia();
-		setMessage("Original media restored.");
-		setError("");
-	}
-
 	async function reloadMedia() {
 		const rows = await getSiteMediaRecords();
 		setRecords(rows);
@@ -126,6 +119,23 @@ function Media() {
 		setSelectedPortfolioIds((ids) => allPortfolioSelected
 			? ids.filter((id) => !filteredIds.includes(id))
 			: [...new Set([...ids, ...filteredIds])]);
+	}
+
+	function addPortfolioCategoryFilter(
+		category: string,
+		setCategories: (categories: string[]) => void,
+		categories: string[],
+	) {
+		if (!category || categories.includes(category)) return;
+		setCategories([...categories, category]);
+	}
+
+	function removePortfolioCategoryFilter(
+		category: string,
+		setCategories: (categories: string[]) => void,
+		categories: string[],
+	) {
+		setCategories(categories.filter((currentCategory) => currentCategory !== category));
 	}
 
 	async function saveBulkPortfolioDetails(event: FormEvent<HTMLFormElement>) {
@@ -168,18 +178,21 @@ function Media() {
 
 	async function addPortfolioImage(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
-		if (!portfolioFile) return;
+		if (portfolioFiles.length === 0) return;
 		const form = event.currentTarget;
 		setIsAddingPortfolioImage(true);
 		try {
-			await createPortfolioImage(portfolioFile);
+			for (const file of portfolioFiles) {
+				await createPortfolioImage(file);
+			}
 			await reloadMedia();
-			setPortfolioFile(null);
+			const uploadedCount = portfolioFiles.length;
+			setPortfolioFiles([]);
 			form.reset();
-			setMessage("Portfolio image added.");
+			setMessage(`Added ${uploadedCount} portfolio ${uploadedCount === 1 ? "image" : "images"}.`);
 			setError("");
 		} catch (requestError) {
-			setError(getApiError(requestError, "Unable to add portfolio image."));
+			setError(getApiError(requestError, "Unable to add all selected portfolio images."));
 		} finally {
 			setIsAddingPortfolioImage(false);
 		}
@@ -260,45 +273,41 @@ function Media() {
 								)}
 								{currentPage.id === "portfolio" && (
 									<>
-										<form className="portfolio-gallery-add" onSubmit={addPortfolioImage}>
-											<label>
-												Add portfolio image
-												<input
-													type="file"
-													accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
-													disabled={isAddingPortfolioImage}
-													onChange={(event) => setPortfolioFile(event.target.files?.[0] ?? null)}
-												/>
-											</label>
-											<button type="submit" disabled={!portfolioFile || isAddingPortfolioImage}>
-												{isAddingPortfolioImage ? "Adding..." : "Add image"}
-											</button>
-										</form>
-										<section className="portfolio-bulk-editor" aria-labelledby="portfolio-bulk-title">
+										<section className="portfolio-tool-panel portfolio-upload-panel" aria-labelledby="portfolio-upload-title">
+											<div className="portfolio-tool-heading">
+												<div>
+													<p className="eyebrow">Portfolio library</p>
+													<h3 id="portfolio-upload-title">Add photos</h3>
+													<p>Upload a new image to the portfolio gallery.</p>
+												</div>
+											</div>
+											<form className="portfolio-gallery-add" onSubmit={addPortfolioImage}>
+												<label>
+													Choose portfolio images
+													<input
+														type="file"
+														multiple
+														accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+														disabled={isAddingPortfolioImage}
+														onChange={(event) => setPortfolioFiles(Array.from(event.target.files ?? []))}
+													/>
+												</label>
+												<button type="submit" disabled={portfolioFiles.length === 0 || isAddingPortfolioImage}>
+													{isAddingPortfolioImage ? "Adding..." : `Add ${portfolioFiles.length || ""} image${portfolioFiles.length === 1 ? "" : "s"}`}
+												</button>
+											</form>
+										</section>
+										<section className="portfolio-tool-panel" aria-labelledby="portfolio-filter-title">
+											<div className="portfolio-tool-heading">
+												<div>
+													<p className="eyebrow">Browse photos</p>
+													<h3 id="portfolio-filter-title">Filter photos</h3>
+													<p>Use category tags or search details to find photos.</p>
+												</div>
+												<span>{filteredPortfolioRecords.length} of {portfolioRecords.length} shown</span>
+											</div>
 											<div className="portfolio-photo-filters" aria-label="Filter portfolio photos">
-												<label>
-													Include categories
-													<select
-														multiple
-														value={includedPortfolioCategories}
-														aria-describedby="portfolio-category-filter-help"
-														onChange={(event) => setIncludedPortfolioCategories(Array.from(event.target.selectedOptions, (option) => option.value))}
-													>
-														{portfolioCategories.map((category) => <option key={category} value={category}>{category}</option>)}
-													</select>
-												</label>
-												<label>
-													Exclude categories
-													<select
-														multiple
-														value={excludedPortfolioCategories}
-														aria-describedby="portfolio-category-filter-help"
-														onChange={(event) => setExcludedPortfolioCategories(Array.from(event.target.selectedOptions, (option) => option.value))}
-													>
-														{portfolioCategories.map((category) => <option key={category} value={category}>{category}</option>)}
-													</select>
-												</label>
-												<label>
+												<label className="portfolio-search-filter">
 													Search photos
 													<input
 														type="search"
@@ -307,12 +316,50 @@ function Media() {
 														onChange={(event) => setPortfolioSearch(event.target.value)}
 													/>
 												</label>
-												<p id="portfolio-category-filter-help">Leave Include categories empty to show all categories. Excluded categories are always hidden.</p>
-												<span>Showing {filteredPortfolioRecords.length} of {portfolioRecords.length} photos</span>
+												<div className="portfolio-category-filter">
+													<label htmlFor="portfolio-include-category">Include categories</label>
+													<select
+														id="portfolio-include-category"
+														value=""
+														onChange={(event) => addPortfolioCategoryFilter(event.target.value, setIncludedPortfolioCategories, includedPortfolioCategories)}
+													>
+														<option value="">Add category...</option>
+														{portfolioCategories.map((category) => <option key={category} value={category}>{category}</option>)}
+													</select>
+													<div className="portfolio-category-tags" aria-label="Included categories">
+														{includedPortfolioCategories.map((category) => (
+															<button key={category} type="button" className="portfolio-category-tag include" onClick={() => removePortfolioCategoryFilter(category, setIncludedPortfolioCategories, includedPortfolioCategories)}>
+																{category} <span aria-hidden="true">×</span>
+															</button>
+														))}
+													</div>
+												</div>
+												<div className="portfolio-category-filter">
+													<label htmlFor="portfolio-exclude-category">Exclude categories</label>
+													<select
+														id="portfolio-exclude-category"
+														value=""
+														onChange={(event) => addPortfolioCategoryFilter(event.target.value, setExcludedPortfolioCategories, excludedPortfolioCategories)}
+													>
+														<option value="">Add category...</option>
+														{portfolioCategories.map((category) => <option key={category} value={category}>{category}</option>)}
+													</select>
+													<div className="portfolio-category-tags" aria-label="Excluded categories">
+														{excludedPortfolioCategories.map((category) => (
+															<button key={category} type="button" className="portfolio-category-tag exclude" onClick={() => removePortfolioCategoryFilter(category, setExcludedPortfolioCategories, excludedPortfolioCategories)}>
+																{category} <span aria-hidden="true">×</span>
+															</button>
+														))}
+													</div>
+												</div>
+												<p id="portfolio-category-filter-help">Use the dropdowns to add category tags. Leave Include categories empty to show all categories; excluded categories are always hidden.</p>
 											</div>
+										</section>
+										<section className="portfolio-tool-panel portfolio-bulk-editor" aria-labelledby="portfolio-bulk-title">
 											<div className="portfolio-bulk-heading">
 												<div>
-													<h3 id="portfolio-bulk-title">Bulk edit portfolio details</h3>
+													<p className="eyebrow">Batch changes</p>
+													<h3 id="portfolio-bulk-title">Bulk edit details</h3>
 													<p>Select photos below, then apply shared details to all selected images.</p>
 												</div>
 												<label className="media-selection-control">
@@ -339,9 +386,35 @@ function Media() {
 												<button type="submit" disabled={isBulkSaving || selectedPortfolioIds.length === 0}>{isBulkSaving ? "Applying..." : `Apply to ${selectedPortfolioIds.length || "selected"} photos`}</button>
 											</form>
 										</section>
+										<section className="portfolio-library-panel" aria-labelledby="portfolio-library-title">
+											<div className="portfolio-tool-heading">
+												<div>
+													<p className="eyebrow">Manage images</p>
+													<h3 id="portfolio-library-title">Photo library</h3>
+													<p>Replace, restore, feature, or delete individual photos.</p>
+												</div>
+											</div>
+											<div className="media-grid">
+												{filteredPortfolioRecords.map((record) => (
+													<SiteMediaCard
+														key={record.id}
+														record={record}
+														isSelected={selectedPortfolioIds.includes(record.id)}
+														onSelect={togglePortfolioSelection}
+														onUpload={persistUpload}
+														onSetFeatured={setFeaturedImage}
+														onDeletePortfolioMedia={removePortfolioImage}
+														onError={(requestError) => setError(getApiError(requestError, "Unable to update website media."))}
+													/>
+												))}
+												{filteredPortfolioRecords.length === 0 && (
+													<p className="portfolio-filter-empty">No portfolio photos match the current filters.</p>
+												)}
+											</div>
+										</section>
 									</>
 								)}
-								<div className="media-grid">
+								{currentPage.id !== "portfolio" && <div className="media-grid">
 									{(currentPage.id === "portfolio"
 										? filteredPortfolioRecords
 										: currentPage.records.filter((record) => currentPage.id !== "home" || (!record.media_key.startsWith("home.carousel.") && !record.media_key.startsWith("home.showcase.")))
@@ -354,14 +427,11 @@ function Media() {
 											onUpload={persistUpload}
 											onSetFeatured={setFeaturedImage}
 											onDeletePortfolioMedia={removePortfolioImage}
-											onRestore={restore}
 											onError={(requestError) => setError(getApiError(requestError, "Unable to update website media."))}
 										/>
 									))}
-									{currentPage.id === "portfolio" && filteredPortfolioRecords.length === 0 && (
-										<p className="portfolio-filter-empty">No portfolio photos match the current filters.</p>
-									)}
 								</div>
+								}
 								{currentPage.id === "faq" && <FaqEditor />}
 							</section>
 						)}
