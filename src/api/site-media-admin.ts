@@ -11,25 +11,19 @@ export async function getSiteMediaRecords() {
 export async function uploadSiteMedia(id: number, file: File) {
 	const formData = new FormData();
 	formData.append("file", file);
-	return api.post(`/dashboard/media/${id}`, formData, {
-		headers: { "Content-Type": "multipart/form-data" },
-	});
+	return api.post(`/dashboard/media/${id}`, formData);
 }
 
 export async function createHomeGalleryImage(collection: "carousel" | "showcase", file: File) {
 	const formData = new FormData();
 	formData.append("file", file);
-	return api.post(`/dashboard/media/home/${collection}`, formData, {
-		headers: { "Content-Type": "multipart/form-data" },
-	});
+	return api.post(`/dashboard/media/home/${collection}`, formData);
 }
 
 export async function createPortfolioImage(file: File) {
 	const formData = new FormData();
 	formData.append("file", file);
-	return api.post("/dashboard/media/portfolio", formData, {
-		headers: { "Content-Type": "multipart/form-data" },
-	});
+	return api.post("/dashboard/media/portfolio", formData);
 }
 
 export async function deleteHomeGalleryImage(id: number) {
@@ -42,6 +36,10 @@ export async function restoreSiteMedia(id: number) {
 
 export async function updatePortfolioMediaDetails(id: number, details: PortfolioMediaDetails) {
 	return api.patch(`/dashboard/media/${id}/portfolio-details`, details);
+}
+
+export async function bulkUpdatePortfolioMediaDetails(media_ids: number[], details: PortfolioMediaDetails) {
+	return api.patch("/dashboard/media/portfolio-details/bulk", { media_ids, ...details });
 }
 
 export async function setFeaturedPortfolioMedia(id: number) {

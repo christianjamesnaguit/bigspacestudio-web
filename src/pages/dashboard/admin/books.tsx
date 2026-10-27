@@ -21,7 +21,7 @@ import {
 } from "../../../api/dashboard";
 
 function customerName(booking: DashboardBooking) {
-	return [booking.customer.first_name, booking.customer.last_name].filter(Boolean).join(" ") || booking.customer.email;
+	return booking.customer ? [booking.customer.first_name, booking.customer.last_name].filter(Boolean).join(" ") || booking.customer.email : "Deleted customer";
 }
 
 const bookingWeekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -105,7 +105,7 @@ function Books() {
 		setEditingBooking(booking);
 		setError("");
 		setMessage("");
-		setSelectedCustomerId(booking ? String(booking.customer.id) : "");
+		setSelectedCustomerId(booking?.customer ? String(booking.customer.id) : "");
 		setSelectedPackageId(booking ? String(booking.package.package_id) : "");
 		setSelectedScheduleId(booking ? String(booking.schedule.schedule_id) : "");
 		const bookingDate = booking ? scheduleDateValue(booking.schedule.schedule_date) : "";

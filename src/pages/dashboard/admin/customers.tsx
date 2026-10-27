@@ -1,5 +1,6 @@
 import "./styles/customers.css";
 import Sidebar from "../../../components/dashboard/sidebar.tsx";
+import { useAuth } from "../../../api/use-auth";
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { getApiError } from "../../../api/auth";
@@ -21,6 +22,7 @@ type CustomerForm = {
 const emptyCustomer: CustomerForm = { first_name: "", last_name: "", email: "", password: "" };
 
 function Customers() {
+	const { user } = useAuth();
 	const [customers, setCustomers] = useState<CustomerRecord[]>([]);
 	const [editingCustomer, setEditingCustomer] = useState<CustomerRecord | null>(null);
 	const [isFormOpen, setIsFormOpen] = useState(false);
@@ -162,7 +164,7 @@ function Customers() {
 								<span>₱{Number(customer.bookings_sum_total_price ?? 0).toLocaleString()}</span>
 								<div className="crud-row-actions">
 									<button type="button" className="crud-secondary" onClick={() => openEditForm(customer)}>Edit</button>
-									<button type="button" className="crud-danger" onClick={() => handleDelete(customer)}>Delete</button>
+									{user?.role === "Admin" && <button type="button" className="crud-danger" onClick={() => handleDelete(customer)}>Delete</button>}
 								</div>
 							</div>
 						))}

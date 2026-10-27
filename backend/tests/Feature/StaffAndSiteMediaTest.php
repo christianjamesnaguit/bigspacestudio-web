@@ -153,6 +153,31 @@ class StaffAndSiteMediaTest extends TestCase
         ]);
     }
 
+    public function test_admin_can_bulk_update_portfolio_image_metadata(): void
+    {
+        $this->actingAs(User::factory()->create(['role' => 'Admin']));
+        $mediaIds = SiteMedia::query()
+            ->whereIn('media_key', ['portfolio.1', 'portfolio.2'])
+            ->pluck('id')
+            ->all();
+
+        $this->patchJson('/api/dashboard/media/portfolio-details/bulk', [
+            'media_ids' => $mediaIds,
+            'category' => 'Corporate',
+            'shoot_type' => 'Team portrait',
+            'client_name' => 'Studio team',
+        ])->assertOk()->assertJsonCount(2, 'media');
+
+        foreach ($mediaIds as $mediaId) {
+            $this->assertDatabaseHas('site_media', [
+                'id' => $mediaId,
+                'category' => 'Corporate',
+                'shoot_type' => 'Team portrait',
+                'client_name' => 'Studio team',
+            ]);
+        }
+    }
+
     public function test_admin_can_set_a_single_featured_portfolio_image(): void
     {
         $this->actingAs(User::factory()->create(['role' => 'Admin']));

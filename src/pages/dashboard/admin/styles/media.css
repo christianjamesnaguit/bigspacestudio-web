@@ -450,6 +450,11 @@
 	padding: 1rem;
 }
 
+.media-card.is-selected {
+	border-color: var(--palette-accent);
+	box-shadow: 0 0 0 2px var(--palette-accent);
+}
+
 .media-preview {
 	display: grid;
 	min-height: 170px;
@@ -516,6 +521,85 @@
 .portfolio-gallery-add button {
 	padding: 0.5rem 0.7rem;
 	font-size: 0.78rem;
+}
+
+.portfolio-bulk-editor {
+	display: grid;
+	gap: 0.85rem;
+	padding: 1rem;
+	border: 1px solid var(--palette-line);
+	border-radius: 6px;
+	background: #fff;
+}
+
+.portfolio-bulk-heading {
+	display: flex;
+	align-items: start;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.portfolio-bulk-heading h3 {
+	margin: 0;
+	color: #252825;
+	font-size: 1rem;
+}
+
+.portfolio-bulk-heading p {
+	margin: 0.3rem 0 0;
+	color: var(--palette-muted);
+	font-size: 0.82rem;
+}
+
+.portfolio-bulk-form {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+	align-items: end;
+	gap: 0.65rem;
+}
+
+.portfolio-bulk-form label {
+	display: grid;
+	gap: 0.35rem;
+	color: #303030;
+	font-size: 0.8rem;
+	font-weight: 700;
+}
+
+.portfolio-bulk-form input,
+.portfolio-bulk-form select {
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+	padding: 0.6rem 0.65rem;
+	border: 1px solid var(--palette-line);
+	border-radius: 5px;
+	background: #fff;
+	color: #171717;
+	font: inherit;
+	font-size: 0.82rem;
+	font-weight: 400;
+}
+
+.portfolio-bulk-form button {
+	padding: 0.6rem 0.75rem;
+	font-size: 0.78rem;
+}
+
+.media-selection-control {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45rem;
+	color: #303030;
+	font-size: 0.78rem;
+	font-weight: 700;
+}
+
+.media-selection-control input {
+	width: 1rem;
+	height: 1rem;
+	margin: 0;
+	accent-color: var(--palette-accent);
 }
 
 .portfolio-metadata-form {

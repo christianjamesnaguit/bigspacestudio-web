@@ -68,7 +68,7 @@ export type DashboardBooking = {
     total_price: string;
     booking_status: "pending" | "approved" | "confirmed" | "denied" | "cancelled";
     booked_at: string;
-    customer: DashboardCustomer;
+    customer: DashboardCustomer | null;
     package: DashboardPackage;
     schedule: DashboardSchedule;
 };

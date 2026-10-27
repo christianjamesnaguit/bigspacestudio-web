@@ -6,7 +6,7 @@ import { getApiError } from "../../../api/auth";
 import { getDashboardOverview, type DashboardBooking, type DashboardStats } from "../../../api/dashboard";
 
 function customerName(customer: DashboardBooking["customer"]) {
-  return [customer.first_name, customer.last_name].filter(Boolean).join(" ") || customer.email;
+  return customer ? [customer.first_name, customer.last_name].filter(Boolean).join(" ") || customer.email : "Deleted customer";
 }
 
 function bookingDate(booking: DashboardBooking) {

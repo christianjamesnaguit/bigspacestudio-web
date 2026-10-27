@@ -195,12 +195,6 @@ class DashboardController extends Controller
         DB::transaction(function () use ($customer): void {
             $customer = User::query()->lockForUpdate()->findOrFail($customer->id);
             $this->ensureCustomer($customer);
-            if ($customer->bookings()->exists()) {
-                throw ValidationException::withMessages([
-                    'customer' => ['Customers with booking history cannot be deleted.'],
-                ]);
-            }
-
             $customer->delete();
         });
 

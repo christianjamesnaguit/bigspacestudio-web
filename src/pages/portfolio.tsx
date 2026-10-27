@@ -54,7 +54,7 @@ function Portfolio() {
 			: items,
 		[items, selectedCategory],
 	);
-  const featuredItem = filteredItems.find((item) => item.isFeatured) ?? filteredItems[0];
+  const featuredItem = items.find((item) => item.isFeatured) ?? items[0];
   const galleryItems = filteredItems.filter((item) => item.mediaKey !== featuredItem?.mediaKey);
 	const activeIndex = filteredItems.findIndex((item) => item.mediaKey === activeMediaKey);
 	const activeItem = activeIndex >= 0 ? filteredItems[activeIndex] : null;
@@ -168,7 +168,7 @@ function Portfolio() {
 
           {galleryItems.length > 0 ? (
             <div className="portfolio-masonry">
-              {galleryItems.map((item, index) => (
+              {galleryItems.map((item) => (
                 <figure className="portfolio-card" key={item.mediaKey}>
                   <button
                     type="button"
@@ -177,7 +177,6 @@ function Portfolio() {
                     onClick={() => setActiveMediaKey(item.mediaKey)}
                   >
                     <SiteMediaContent mediaKey={item.mediaKey} alt={item.altText} />
-                    <span className="portfolio-image-index">{String(index + 2).padStart(2, "0")}</span>
                   </button>
                   <figcaption>
                     <div>

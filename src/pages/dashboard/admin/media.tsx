@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import Sidebar from "../../../components/dashboard/sidebar";
 import { getApiError } from "../../../api/auth";
-import { createHomeGalleryImage, createPortfolioImage, deleteHomeGalleryImage, deletePortfolioMedia, restoreSiteMedia, getSiteMediaRecords, setFeaturedPortfolioMedia, updatePortfolioMediaDetails, uploadSiteMedia } from "../../../api/site-media-admin";
+import { bulkUpdatePortfolioMediaDetails, createHomeGalleryImage, createPortfolioImage, deleteHomeGalleryImage, deletePortfolioMedia, restoreSiteMedia, getSiteMediaRecords, setFeaturedPortfolioMedia, uploadSiteMedia } from "../../../api/site-media-admin";
+import type { PortfolioMediaDetails } from "../../../api/site-media-admin";
 import { useSiteMedia } from "../../../api/site-media-context";
 import type { SiteMediaRecord } from "../../../api/site-media-defaults";
 import SiteMediaCard from "./media-card";
@@ -18,6 +19,9 @@ function Media() {
 	const [message, setMessage] = useState("");
 	const [portfolioFile, setPortfolioFile] = useState<File | null>(null);
 	const [isAddingPortfolioImage, setIsAddingPortfolioImage] = useState(false);
+	const [selectedPortfolioIds, setSelectedPortfolioIds] = useState<number[]>([]);
+	const [bulkDetails, setBulkDetails] = useState<PortfolioMediaDetails>({ category: null, shoot_type: null, client_name: null });
+	const [isBulkSaving, setIsBulkSaving] = useState(false);
 	const { refresh } = useSiteMedia();
 
 	const pages = useMemo(() => [
@@ -57,6 +61,8 @@ function Media() {
 		},
 	], [records]);
 	const currentPage = pages.find((page) => page.id === selectedPage) ?? pages[0];
+	const portfolioRecords = currentPage?.id === "portfolio" ? currentPage.records : [];
+	const allPortfolioSelected = portfolioRecords.length > 0 && portfolioRecords.every((record) => selectedPortfolioIds.includes(record.id));
 
 	useEffect(() => {
 		let active = true;
@@ -83,7 +89,33 @@ function Media() {
 	async function reloadMedia() {
 		const rows = await getSiteMediaRecords();
 		setRecords(rows);
+		setSelectedPortfolioIds((ids) => ids.filter((id) => rows.some((row) => row.id === id)));
 		await refresh();
+	}
+
+	function togglePortfolioSelection(id: number) {
+		setSelectedPortfolioIds((ids) => ids.includes(id) ? ids.filter((selectedId) => selectedId !== id) : [...ids, id]);
+	}
+
+	function toggleAllPortfolioSelection() {
+		setSelectedPortfolioIds(allPortfolioSelected ? [] : portfolioRecords.map((record) => record.id));
+	}
+
+	async function saveBulkPortfolioDetails(event: FormEvent<HTMLFormElement>) {
+		event.preventDefault();
+		if (selectedPortfolioIds.length === 0) return;
+		setIsBulkSaving(true);
+		try {
+			await bulkUpdatePortfolioMediaDetails(selectedPortfolioIds, bulkDetails);
+			await reloadMedia();
+			setBulkDetails({ category: null, shoot_type: null, client_name: null });
+			setMessage(`Updated ${selectedPortfolioIds.length} portfolio ${selectedPortfolioIds.length === 1 ? "image" : "images"}.`);
+			setError("");
+		} catch (requestError) {
+			setError(getApiError(requestError, "Unable to update selected portfolio images."));
+		} finally {
+			setIsBulkSaving(false);
+		}
 	}
 
 	async function addHomeImage(collection: "carousel" | "showcase", file: File) {
@@ -97,13 +129,6 @@ function Media() {
 		await uploadSiteMedia(id, file);
 		await reloadMedia();
 		setMessage("Homepage image updated.");
-		setError("");
-	}
-
-	async function persistPortfolioDetails(id: number, details: Pick<SiteMediaRecord, "category" | "shoot_type" | "client_name">) {
-		await updatePortfolioMediaDetails(id, details);
-		await reloadMedia();
-		setMessage("Portfolio details updated.");
 		setError("");
 	}
 
@@ -207,28 +232,61 @@ function Media() {
 									</>
 								)}
 								{currentPage.id === "portfolio" && (
-									<form className="portfolio-gallery-add" onSubmit={addPortfolioImage}>
-										<label>
-											Add portfolio image
-											<input
-												type="file"
-												accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
-												disabled={isAddingPortfolioImage}
-												onChange={(event) => setPortfolioFile(event.target.files?.[0] ?? null)}
-											/>
-										</label>
-										<button type="submit" disabled={!portfolioFile || isAddingPortfolioImage}>
-											{isAddingPortfolioImage ? "Adding..." : "Add image"}
-										</button>
-									</form>
+									<>
+										<form className="portfolio-gallery-add" onSubmit={addPortfolioImage}>
+											<label>
+												Add portfolio image
+												<input
+													type="file"
+													accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+													disabled={isAddingPortfolioImage}
+													onChange={(event) => setPortfolioFile(event.target.files?.[0] ?? null)}
+												/>
+											</label>
+											<button type="submit" disabled={!portfolioFile || isAddingPortfolioImage}>
+												{isAddingPortfolioImage ? "Adding..." : "Add image"}
+											</button>
+										</form>
+										<section className="portfolio-bulk-editor" aria-labelledby="portfolio-bulk-title">
+											<div className="portfolio-bulk-heading">
+												<div>
+													<h3 id="portfolio-bulk-title">Bulk edit portfolio details</h3>
+													<p>Select photos below, then apply shared details to all selected images.</p>
+												</div>
+												<label className="media-selection-control">
+													<input type="checkbox" checked={allPortfolioSelected} onChange={toggleAllPortfolioSelection} />
+													<span>Select all {portfolioRecords.length} photos</span>
+												</label>
+											</div>
+											<form className="portfolio-bulk-form" onSubmit={saveBulkPortfolioDetails}>
+												<label>
+													Category
+													<select value={bulkDetails.category ?? ""} disabled={isBulkSaving || selectedPortfolioIds.length === 0} onChange={(event) => setBulkDetails({ ...bulkDetails, category: event.target.value || null })}>
+														<option value="">Unassigned</option>
+														{["Graduation", "Birthday", "Solo Creative", "Duo/Couple (portrait)", "Prenup (portrait)", "K-Profile", "Family", "Corporate", "Barkada"].map((category) => <option key={category} value={category}>{category}</option>)}
+													</select>
+												</label>
+												<label>
+													Shoot type
+													<input maxLength={120} value={bulkDetails.shoot_type ?? ""} disabled={isBulkSaving || selectedPortfolioIds.length === 0} onChange={(event) => setBulkDetails({ ...bulkDetails, shoot_type: event.target.value || null })} />
+												</label>
+												<label>
+													Client / project name
+													<input maxLength={180} value={bulkDetails.client_name ?? ""} disabled={isBulkSaving || selectedPortfolioIds.length === 0} onChange={(event) => setBulkDetails({ ...bulkDetails, client_name: event.target.value || null })} />
+												</label>
+												<button type="submit" disabled={isBulkSaving || selectedPortfolioIds.length === 0}>{isBulkSaving ? "Applying..." : `Apply to ${selectedPortfolioIds.length || "selected"} photos`}</button>
+											</form>
+										</section>
+									</>
 								)}
 								<div className="media-grid">
 									{currentPage.records.filter((record) => currentPage.id !== "home" || (!record.media_key.startsWith("home.carousel.") && !record.media_key.startsWith("home.showcase."))).map((record) => (
 										<SiteMediaCard
 											key={record.id}
 											record={record}
+											isSelected={selectedPortfolioIds.includes(record.id)}
+											onSelect={togglePortfolioSelection}
 											onUpload={persistUpload}
-											onUpdatePortfolioDetails={persistPortfolioDetails}
 											onSetFeatured={setFeaturedImage}
 											onDeletePortfolioMedia={removePortfolioImage}
 											onRestore={restore}

@@ -52,11 +52,24 @@ class DashboardCrudTest extends TestCase
             'package_id' => Package::factory()->create()->package_id,
             'schedule_id' => Schedule::factory()->create()->schedule_id,
         ]);
-        $this->deleteJson("/api/dashboard/customers/{$customerId}")->assertUnprocessable();
-        $booking->delete();
-
         $this->deleteJson("/api/dashboard/customers/{$customerId}")->assertOk();
         $this->assertDatabaseMissing('users', ['id' => $customerId]);
+        $this->assertDatabaseHas('bookings', [
+            'booking_id' => $booking->booking_id,
+            'customer_id' => null,
+        ]);
+    }
+
+    public function test_staff_cannot_delete_customers(): void
+    {
+        $staff = User::factory()->create(['role' => 'Staff']);
+        $customer = User::factory()->create(['role' => 'Customer']);
+
+        $this->actingAs($staff)
+            ->deleteJson("/api/dashboard/customers/{$customer->id}")
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('users', ['id' => $customer->id]);
     }
 
     public function test_admin_can_manage_schedules_and_cannot_delete_schedules_with_booking_history(): void

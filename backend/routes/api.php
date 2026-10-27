@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/customers', [DashboardController::class, 'customers']);
         Route::post('/customers', [DashboardController::class, 'storeCustomer']);
         Route::put('/customers/{customer}', [DashboardController::class, 'updateCustomer']);
-        Route::delete('/customers/{customer}', [DashboardController::class, 'destroyCustomer']);
+        Route::delete('/customers/{customer}', [DashboardController::class, 'destroyCustomer'])->middleware('admin');
         Route::get('/packages', [DashboardController::class, 'packages']);
         Route::middleware('admin')->group(function () {
             Route::post('/faqs', [FaqController::class, 'store']);
@@ -57,6 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::put('/media/{media}', [SiteMediaController::class, 'update']);
             Route::post('/media/{media}', [SiteMediaController::class, 'update']);
             Route::patch('/media/{media}/portfolio-details', [SiteMediaController::class, 'updatePortfolioDetails']);
+            Route::patch('/media/portfolio-details/bulk', [SiteMediaController::class, 'bulkUpdatePortfolioDetails']);
             Route::patch('/media/{media}/portfolio-featured', [SiteMediaController::class, 'setFeaturedPortfolioImage']);
             Route::delete('/media/portfolio/{media}', [SiteMediaController::class, 'destroyPortfolioImage']);
             Route::post('/media/home/{collection}', [SiteMediaController::class, 'storeHomeImage']);

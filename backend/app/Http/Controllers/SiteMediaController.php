@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class SiteMediaController extends Controller
@@ -68,6 +69,51 @@ class SiteMediaController extends Controller
         $media->save();
 
         return response()->json(['media' => $this->mediaData($media)]);
+    }
+
+    public function bulkUpdatePortfolioDetails(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'media_ids' => ['required', 'array', 'min:1'],
+            'media_ids.*' => ['integer', 'distinct'],
+            'category' => ['nullable', 'string', Rule::in([
+                'Graduation',
+                'Birthday',
+                'Solo Creative',
+                'Duo/Couple (portrait)',
+                'Prenup (portrait)',
+                'K-Profile',
+                'Family',
+                'Corporate',
+                'Barkada',
+            ])],
+            'shoot_type' => ['nullable', 'string', 'max:120'],
+            'client_name' => ['nullable', 'string', 'max:180'],
+        ]);
+
+        $media = SiteMedia::query()
+            ->whereIn('id', $validated['media_ids'])
+            ->where('media_key', 'like', 'portfolio.%')
+            ->get();
+        if ($media->count() !== count($validated['media_ids'])) {
+            throw ValidationException::withMessages([
+                'media_ids' => ['All selected records must be portfolio images.'],
+            ]);
+        }
+
+        DB::transaction(function () use ($media, $validated): void {
+            $media->each(function (SiteMedia $record) use ($validated): void {
+                $record->fill([
+                    'category' => $validated['category'] ?? null,
+                    'shoot_type' => $validated['shoot_type'] ?? null,
+                    'client_name' => $validated['client_name'] ?? null,
+                ])->save();
+            });
+        });
+
+        return response()->json([
+            'media' => $media->fresh()->map(fn (SiteMedia $record): array => $this->mediaData($record))->values(),
+        ]);
     }
 
     public function setFeaturedPortfolioImage(SiteMedia $media): JsonResponse
