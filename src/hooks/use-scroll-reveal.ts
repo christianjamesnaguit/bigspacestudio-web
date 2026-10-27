@@ -7,7 +7,7 @@ export function useScrollReveal<T extends HTMLElement>(
     const container = containerRef.current;
     if (!container) return;
 
-    const elements = container.querySelectorAll(".home-reveal");
+    const elements = container.querySelectorAll(".home-reveal, .portfolio-reveal");
     if (!("IntersectionObserver" in window)) {
       elements.forEach((element) => element.classList.add("is-visible"));
       return;

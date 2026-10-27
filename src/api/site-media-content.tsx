@@ -1,7 +1,17 @@
 import { defaultSiteMedia } from "./site-media-defaults";
 import { useSiteMedia } from "./site-media-context";
 
-function SiteMediaContent({ mediaKey, alt, className }: { mediaKey: string; alt?: string; className?: string }) {
+function SiteMediaContent({
+	mediaKey,
+	alt,
+	className,
+	loading = "lazy",
+}: {
+	mediaKey: string;
+	alt?: string;
+	className?: string;
+	loading?: "eager" | "lazy";
+}) {
 	const { media } = useSiteMedia();
 	const record = media[mediaKey];
 	const fallback = defaultSiteMedia[mediaKey];
@@ -13,7 +23,7 @@ function SiteMediaContent({ mediaKey, alt, className }: { mediaKey: string; alt?
 		return <video {...commonProps} aria-label={text || undefined} src={src} autoPlay muted playsInline loop preload="metadata" />;
 	}
 
-	return <img {...commonProps} src={src} alt={text} />;
+	return <img {...commonProps} src={src} alt={text} loading={loading} />;
 }
 
 export default SiteMediaContent;

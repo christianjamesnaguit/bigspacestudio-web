@@ -5,7 +5,7 @@ import { getApiError } from "../../../api/auth";
 import { bulkUpdatePortfolioMediaDetails, createHomeGalleryImage, createPortfolioImage, deleteHomeGalleryImage, deletePortfolioMedia, restoreSiteMedia, getSiteMediaRecords, setFeaturedPortfolioMedia, uploadSiteMedia } from "../../../api/site-media-admin";
 import type { PortfolioMediaDetails } from "../../../api/site-media-admin";
 import { useSiteMedia } from "../../../api/site-media-context";
-import type { SiteMediaRecord } from "../../../api/site-media-defaults";
+import { portfolioCategories, type SiteMediaRecord } from "../../../api/site-media-defaults";
 import SiteMediaCard from "./media-card";
 import FaqEditor from "./faq-editor";
 import HomeGalleryEditor from "./home-gallery-editor";
@@ -20,6 +20,9 @@ function Media() {
 	const [portfolioFile, setPortfolioFile] = useState<File | null>(null);
 	const [isAddingPortfolioImage, setIsAddingPortfolioImage] = useState(false);
 	const [selectedPortfolioIds, setSelectedPortfolioIds] = useState<number[]>([]);
+	const [includedPortfolioCategories, setIncludedPortfolioCategories] = useState<string[]>([]);
+	const [excludedPortfolioCategories, setExcludedPortfolioCategories] = useState<string[]>([]);
+	const [portfolioSearch, setPortfolioSearch] = useState("");
 	const [bulkDetails, setBulkDetails] = useState<PortfolioMediaDetails>({ category: null, shoot_type: null, client_name: null });
 	const [isBulkSaving, setIsBulkSaving] = useState(false);
 	const { refresh } = useSiteMedia();
@@ -61,8 +64,29 @@ function Media() {
 		},
 	], [records]);
 	const currentPage = pages.find((page) => page.id === selectedPage) ?? pages[0];
-	const portfolioRecords = currentPage?.id === "portfolio" ? currentPage.records : [];
-	const allPortfolioSelected = portfolioRecords.length > 0 && portfolioRecords.every((record) => selectedPortfolioIds.includes(record.id));
+	const portfolioRecords = useMemo(
+		() => currentPage?.id === "portfolio" ? currentPage.records : [],
+		[currentPage],
+	);
+	const filteredPortfolioRecords = useMemo(() => {
+		const search = portfolioSearch.trim().toLowerCase();
+		return portfolioRecords.filter((record) => {
+			const matchesIncludedCategory = includedPortfolioCategories.length === 0
+				|| (record.category !== null && includedPortfolioCategories.includes(record.category));
+			const matchesExcludedCategory = record.category === null
+				|| !excludedPortfolioCategories.includes(record.category);
+			const matchesSearch = !search || [
+				record.label,
+				record.media_key,
+				record.category,
+				record.shoot_type,
+				record.client_name,
+			].some((value) => value?.toLowerCase().includes(search));
+			return matchesIncludedCategory && matchesExcludedCategory && matchesSearch;
+		});
+	}, [excludedPortfolioCategories, includedPortfolioCategories, portfolioRecords, portfolioSearch]);
+	const allPortfolioSelected = filteredPortfolioRecords.length > 0
+		&& filteredPortfolioRecords.every((record) => selectedPortfolioIds.includes(record.id));
 
 	useEffect(() => {
 		let active = true;
@@ -98,7 +122,10 @@ function Media() {
 	}
 
 	function toggleAllPortfolioSelection() {
-		setSelectedPortfolioIds(allPortfolioSelected ? [] : portfolioRecords.map((record) => record.id));
+		const filteredIds = filteredPortfolioRecords.map((record) => record.id);
+		setSelectedPortfolioIds((ids) => allPortfolioSelected
+			? ids.filter((id) => !filteredIds.includes(id))
+			: [...new Set([...ids, ...filteredIds])]);
 	}
 
 	async function saveBulkPortfolioDetails(event: FormEvent<HTMLFormElement>) {
@@ -248,6 +275,41 @@ function Media() {
 											</button>
 										</form>
 										<section className="portfolio-bulk-editor" aria-labelledby="portfolio-bulk-title">
+											<div className="portfolio-photo-filters" aria-label="Filter portfolio photos">
+												<label>
+													Include categories
+													<select
+														multiple
+														value={includedPortfolioCategories}
+														aria-describedby="portfolio-category-filter-help"
+														onChange={(event) => setIncludedPortfolioCategories(Array.from(event.target.selectedOptions, (option) => option.value))}
+													>
+														{portfolioCategories.map((category) => <option key={category} value={category}>{category}</option>)}
+													</select>
+												</label>
+												<label>
+													Exclude categories
+													<select
+														multiple
+														value={excludedPortfolioCategories}
+														aria-describedby="portfolio-category-filter-help"
+														onChange={(event) => setExcludedPortfolioCategories(Array.from(event.target.selectedOptions, (option) => option.value))}
+													>
+														{portfolioCategories.map((category) => <option key={category} value={category}>{category}</option>)}
+													</select>
+												</label>
+												<label>
+													Search photos
+													<input
+														type="search"
+														value={portfolioSearch}
+														placeholder="Label, shoot type, client..."
+														onChange={(event) => setPortfolioSearch(event.target.value)}
+													/>
+												</label>
+												<p id="portfolio-category-filter-help">Leave Include categories empty to show all categories. Excluded categories are always hidden.</p>
+												<span>Showing {filteredPortfolioRecords.length} of {portfolioRecords.length} photos</span>
+											</div>
 											<div className="portfolio-bulk-heading">
 												<div>
 													<h3 id="portfolio-bulk-title">Bulk edit portfolio details</h3>
@@ -255,7 +317,7 @@ function Media() {
 												</div>
 												<label className="media-selection-control">
 													<input type="checkbox" checked={allPortfolioSelected} onChange={toggleAllPortfolioSelection} />
-													<span>Select all {portfolioRecords.length} photos</span>
+													<span>Select all {filteredPortfolioRecords.length} visible photos</span>
 												</label>
 											</div>
 											<form className="portfolio-bulk-form" onSubmit={saveBulkPortfolioDetails}>
@@ -280,7 +342,10 @@ function Media() {
 									</>
 								)}
 								<div className="media-grid">
-									{currentPage.records.filter((record) => currentPage.id !== "home" || (!record.media_key.startsWith("home.carousel.") && !record.media_key.startsWith("home.showcase."))).map((record) => (
+									{(currentPage.id === "portfolio"
+										? filteredPortfolioRecords
+										: currentPage.records.filter((record) => currentPage.id !== "home" || (!record.media_key.startsWith("home.carousel.") && !record.media_key.startsWith("home.showcase.")))
+									).map((record) => (
 										<SiteMediaCard
 											key={record.id}
 											record={record}
@@ -293,6 +358,9 @@ function Media() {
 											onError={(requestError) => setError(getApiError(requestError, "Unable to update website media."))}
 										/>
 									))}
+									{currentPage.id === "portfolio" && filteredPortfolioRecords.length === 0 && (
+										<p className="portfolio-filter-empty">No portfolio photos match the current filters.</p>
+									)}
 								</div>
 								{currentPage.id === "faq" && <FaqEditor />}
 							</section>

@@ -50,7 +50,12 @@ function Carousel() {
   }, [activeIndex, animateTo, isAnimating, slides.length]);
 
   const renderSlide = (mediaKey: string, className: string) => (
-    <SiteMediaContent key={media[mediaKey]?.url ?? mediaKey} mediaKey={mediaKey} className={className} />
+    <SiteMediaContent
+      key={media[mediaKey]?.url ?? mediaKey}
+      mediaKey={mediaKey}
+      className={className}
+      loading="eager"
+    />
   );
 
   const nextImage = () => animateTo((activeIndex + 1) % slides.length, "next");

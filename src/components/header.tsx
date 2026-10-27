@@ -18,7 +18,7 @@ function Header() {
     <>
       <header>
         <div className="header-margin">
-          <SiteMediaContent mediaKey="brand.logo" alt="Logo" className="logo" />
+          <SiteMediaContent mediaKey="brand.logo" alt="Logo" className="logo" loading="eager" />
           <nav className="desktop-navigation desktop-only">
             <ul className="primary-nav">
               <li>

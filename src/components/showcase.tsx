@@ -21,6 +21,7 @@ function Showcase() {
             key={`${mediaKey}-${index}`}
             mediaKey={mediaKey}
             className="showcase-image"
+            loading="lazy"
           />
         ))}
       </div>

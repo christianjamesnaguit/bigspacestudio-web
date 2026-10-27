@@ -699,11 +699,11 @@ footer {
 }
 
 .showcase-image {
-  width: clamp(220px, 35vw, 500px);
+  width: auto;
   height: clamp(190px, 30vw, 420px);
-  object-fit: cover;
+  object-fit: contain;
   flex-shrink: 0;
-  margin-right: 20px;
+  margin-right: 4px;
 }
 
 @keyframes showcase-scroll {

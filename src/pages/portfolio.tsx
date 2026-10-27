@@ -109,14 +109,14 @@ function Portfolio() {
       <Header />
       <main className="portfolio-page" ref={portfolioRef}>
         {featuredItem && (
-          <section className="portfolio-featured body-margin" aria-labelledby="portfolio-featured-title">
+          <section className="portfolio-featured body-margin portfolio-reveal" aria-labelledby="portfolio-featured-title">
             <button
               type="button"
               className="portfolio-feature-image"
               aria-label={`View featured ${featuredItem.category ?? "portfolio"} image full screen`}
               onClick={() => setActiveMediaKey(featuredItem.mediaKey)}
             >
-              <SiteMediaContent mediaKey={featuredItem.mediaKey} alt={featuredItem.altText} />
+              <SiteMediaContent mediaKey={featuredItem.mediaKey} alt={featuredItem.altText} loading="eager" />
               <span>Featured frame <span aria-hidden="true">↗</span></span>
             </button>
             <div className="portfolio-feature-copy">
@@ -139,7 +139,7 @@ function Portfolio() {
           </section>
         )}
 
-        <section className="portfolio-gallery body-margin" aria-labelledby="portfolio-gallery-title">
+        <section className="portfolio-gallery body-margin portfolio-reveal" aria-labelledby="portfolio-gallery-title">
           <div className="portfolio-gallery-heading">
             <div>
               <p className="portfolio-eyebrow">The collection</p>
@@ -169,14 +169,14 @@ function Portfolio() {
           {galleryItems.length > 0 ? (
             <div className="portfolio-masonry">
               {galleryItems.map((item) => (
-                <figure className="portfolio-card" key={item.mediaKey}>
+                <figure className="portfolio-card portfolio-reveal" key={item.mediaKey}>
                   <button
                     type="button"
                     className="portfolio-image-trigger"
                     aria-label={`View ${item.clientName || item.category || "portfolio"} image full screen`}
                     onClick={() => setActiveMediaKey(item.mediaKey)}
                   >
-                    <SiteMediaContent mediaKey={item.mediaKey} alt={item.altText} />
+                    <SiteMediaContent mediaKey={item.mediaKey} alt={item.altText} loading="lazy" />
                   </button>
                   <figcaption>
                     <div>
@@ -211,7 +211,7 @@ function Portfolio() {
               </div>
               <div className="portfolio-lightbox-stage">
                 <button type="button" className="portfolio-lightbox-arrow" aria-label="Previous image" onClick={() => showAdjacentImage(-1)} disabled={filteredItems.length < 2}>‹</button>
-                <SiteMediaContent mediaKey={activeItem.mediaKey} alt={activeItem.altText} />
+                <SiteMediaContent mediaKey={activeItem.mediaKey} alt={activeItem.altText} loading="eager" />
                 <button type="button" className="portfolio-lightbox-arrow" aria-label="Next image" onClick={() => showAdjacentImage(1)} disabled={filteredItems.length < 2}>›</button>
               </div>
               <div className="portfolio-lightbox-caption">
